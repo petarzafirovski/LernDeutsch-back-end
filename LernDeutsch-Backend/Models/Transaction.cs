@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using LernDeutsch_Backend.Models.Enumerations;
+using LernDeutsch_Backend.Models.Identity;
 
 namespace LernDeutsch_Backend.Models
 {

@@ -1,4 +1,4 @@
-﻿using LernDeutsch_Backend.Models;
+﻿using LernDeutsch_Backend.Models.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

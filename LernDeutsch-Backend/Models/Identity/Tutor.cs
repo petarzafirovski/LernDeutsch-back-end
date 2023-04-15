@@ -1,4 +1,4 @@
-﻿namespace LernDeutsch_Backend.Models
+﻿namespace LernDeutsch_Backend.Models.Identity
 {
     public class Tutor : BaseUser
     {

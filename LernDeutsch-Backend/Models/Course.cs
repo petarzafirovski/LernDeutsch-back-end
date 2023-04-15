@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography.X509Certificates;
+using LernDeutsch_Backend.Models.Identity;
 
 namespace LernDeutsch_Backend.Models
 {
