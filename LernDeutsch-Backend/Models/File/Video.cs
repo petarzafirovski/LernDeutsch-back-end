@@ -1,6 +1,7 @@
 ﻿namespace LernDeutsch_Backend.Models.File
 {
-    public class Video
+    public class Video : File
     {
+        public TimeSpan Length { get; set; }
     }
 }
