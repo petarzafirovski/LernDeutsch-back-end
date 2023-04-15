@@ -10,15 +10,17 @@ namespace LernDeutsch_Backend.Models
         [Key]
         public Guid id { get; set; }
         [Required]
-        public BaseUser boughtBy { get; set; }
+        public TransactionStatus TransactionStatus { get; set; } = TransactionStatus.Pending;
         [Required]
-        public Course course { get; set; }
+        public TransactionType TransactionType { get; set; }
         [Required]
-        public TransactionStatus transactionStatus { get; set; } = TransactionStatus.Pending;
+        public int Amount { get; set; }
         [Required]
-        public TransactionType transactionType { get; set; }
+        public BaseUser BoughtBy { get; set; }
+
         [Required]
-        public int amount { get; set; }
+        public Course Course { get; set; }
+
 
     }
 }

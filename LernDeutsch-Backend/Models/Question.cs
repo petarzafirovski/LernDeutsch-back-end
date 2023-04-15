@@ -9,8 +9,9 @@ namespace LernDeutsch_Backend.Models
         [Required]
         public string? Text { get; set; }
         [Required]
-        public List<Answer>? Answers { get; set; }
-        [Required]
         public Quiz Quiz { get; set; }
+
+        [Required]
+        public virtual List<Answer>? Answers { get; set; }
     }
 }

@@ -10,9 +10,10 @@ namespace LernDeutsch_Backend.Models
         [Required]
         public string? Title { get; set; }
         [Required]
-        public List<Question> Questions { get; set; }
-        [Required]
         public Lesson Lesson { get; set; }
+
+        [Required]
+        public virtual List<Question> Questions { get; set; }
 
     }
 }
