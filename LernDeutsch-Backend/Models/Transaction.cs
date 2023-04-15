@@ -12,7 +12,6 @@ namespace LernDeutsch_Backend.Models
         public BaseUser boughtBy { get; set; }
         [Required]
         public Course course { get; set; }
-
         [Required]
         public TransactionStatus transactionStatus { get; set; } = TransactionStatus.Pending;
         [Required]

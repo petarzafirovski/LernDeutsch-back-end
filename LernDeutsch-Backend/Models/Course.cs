@@ -6,14 +6,17 @@ namespace LernDeutsch_Backend.Models
     public class Course
     {
         [Key]
-        public int courseId { get; set; }
-        public string name { get; set; }
-        public string level { get; set; }
-        public int lenght { get; set; }
-        public double price { get; set; }
-        public List<Student> students { get; set; }
-        public List<Lesson> lessons { get; set; }
-        public Tutor tutor { get; set; }
+        public int CourseId { get; set; }
+        [Required]
+        public string? Name { get; set; }
+        [Required]
+        public string? Level { get; set; }
+        public int Length { get; set; }
+        public double Price { get; set; }
+        public List<Student> Students { get; set; } = new List<Student>();
+        public List<Lesson> Lessons { get; set; } = new List<Lesson>();
+        [Required]
+        public Tutor Tutor { get; set; }
 
        
 

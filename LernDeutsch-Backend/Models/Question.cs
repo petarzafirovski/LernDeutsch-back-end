@@ -5,14 +5,12 @@ namespace LernDeutsch_Backend.Models
     public class Question
     {
         [Key]
-        public int questionId { get; set; }
-        public string text { get; set; }
-        public List<Answer> answers { get; set; }
-        public Quiz quiz { get; set; }
-
-        
-        
-       
-
+        public int QuestionId { get; set; }
+        [Required]
+        public string? Text { get; set; }
+        [Required]
+        public List<Answer>? Answers { get; set; }
+        [Required]
+        public Quiz Quiz { get; set; }
     }
 }
