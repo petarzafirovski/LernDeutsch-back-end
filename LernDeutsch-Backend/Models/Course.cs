@@ -14,10 +14,11 @@ namespace LernDeutsch_Backend.Models
         public string? Level { get; set; }
         public int Length { get; set; }
         public double Price { get; set; }
-        public List<Student> Students { get; set; } = new List<Student>();
-        public List<Lesson> Lessons { get; set; } = new List<Lesson>();
         [Required]
         public Tutor Tutor { get; set; }
+
+        public virtual List<CourseStudent> Students { get; set; } = new List<CourseStudent>();
+        public virtual List<Lesson> Lessons { get; set; } = new List<Lesson>();
 
        
 
