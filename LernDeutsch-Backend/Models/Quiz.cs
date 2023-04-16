@@ -6,14 +6,14 @@ namespace LernDeutsch_Backend.Models
     public class Quiz
     {
         [Key]
-        public int quizId { get; set; }
-        public string title { get; set; }
-        List<Question> questions { get; set; }
-        Lesson lesson { get; set; }
+        public int QuizId { get; set; }
+        [Required]
+        public string? Title { get; set; }
+        [Required]
+        public Lesson Lesson { get; set; }
 
-       
-       
-
+        [Required]
+        public virtual List<Question> Questions { get; set; }
 
     }
 }

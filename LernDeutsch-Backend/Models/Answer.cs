@@ -5,12 +5,10 @@ namespace LernDeutsch_Backend.Models
     public class Answer
     {
         [Key]
-        public int answerId { get; set; }
-        public string text { get; set; }
-        public bool isCorrect { get; set; }
-        public Question question { get; set; }
-
-      
+        public int AnswerId { get; set; }
+        public string Text { get; set; }
+        public bool IsCorrect { get; set; }
+        public Question Question { get; set; }
       
     }
 
