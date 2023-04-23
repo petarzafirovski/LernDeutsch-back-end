@@ -1,6 +1,6 @@
 ﻿using LernDeutsch_Backend.Models;
 
-namespace LernDeutsch_Backend.Services.Implementation;
+namespace LernDeutsch_Backend.Services;
 
 public interface IAnswerService
 {

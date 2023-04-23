@@ -1,18 +1,19 @@
-using LernDeutsch_Backend.Data;
-using LernDeutsch_Backend.Models.Identity;
-using Microsoft.EntityFrameworkCore;
+using LernDeutsch_Backend;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 
-builder.Services.AddDbContext<ApplicationDatabaseContext>(x => x.UseSqlServer(connectionString));
-builder.Services.AddIdentityCore<BaseUser>().AddEntityFrameworkStores<ApplicationDatabaseContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.Configure(builder.Configuration);
+
+builder.Services.AddRepositories(builder.Configuration);
+builder.Services.AddServices();
 
 var app = builder.Build();
 

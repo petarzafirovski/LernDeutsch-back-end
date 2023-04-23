@@ -29,5 +29,3 @@ namespace LernDeutsch_Backend.Repositories.Implementation
             _context.Quizzes.Remove(GetById(id)!).Entity;
     }
 }
-
-}

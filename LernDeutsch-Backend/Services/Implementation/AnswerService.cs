@@ -1,9 +1,8 @@
 ﻿using LernDeutsch_Backend.Models;
 using LernDeutsch_Backend.Repositories.Implementation;
-using LernDeutsch_Backend.Services.Implementation;
 using System.Collections.Generic;
 
-namespace LernDeutsch_Backend.Services
+namespace LernDeutsch_Backend.Services.Implementation
 {
     public class AnswerService : IAnswerService
     {

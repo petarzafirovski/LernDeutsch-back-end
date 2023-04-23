@@ -3,11 +3,11 @@ using LernDeutsch_Backend.Models;
 
 namespace LernDeutsch_Backend.Repositories.Implementation
 {
-    public class QuestionRepositoryRepository : IQuestionRepository
+    public class QuestionRepository : IQuestionRepository
     {
         private readonly ApplicationDatabaseContext _context;
 
-        public QuestionRepositoryRepository(ApplicationDatabaseContext context)
+        public QuestionRepository(ApplicationDatabaseContext context)
         {
             _context = context;
         }
