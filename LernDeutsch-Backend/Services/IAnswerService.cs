@@ -1,13 +1,9 @@
 ﻿using LernDeutsch_Backend.Models;
+using LernDeutsch_Backend.Services.Core;
 
 namespace LernDeutsch_Backend.Services;
 
-public interface IAnswerService
+public interface IAnswerService : IBaseService<Answer>
 {
-    List<Answer> GetAllAnswers();
-    Answer? GetAnswerById(Guid id);
     List<Answer> GetAnswersByQuestionId(int questionId);
-    void AddAnswer(Answer answer);
-    void UpdateAnswer(Answer answer);
-    void DeleteAnswer(Guid id);
 }

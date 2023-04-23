@@ -1,4 +1,5 @@
 ﻿using LernDeutsch_Backend.Models;
+using LernDeutsch_Backend.Repositories;
 using LernDeutsch_Backend.Repositories.Implementation;
 using System.Collections.Generic;
 
@@ -13,34 +14,36 @@ namespace LernDeutsch_Backend.Services.Implementation
             _answerRepository = answerRepository;
         }
 
-        public void AddAnswer(Answer answer)
-        {
+        public Answer Create(Answer answer) =>
             _answerRepository.Create(answer);
-        }
 
-        public void DeleteAnswer(Guid id)
-        {
+        public Answer Delete(Guid id) =>
             _answerRepository.Delete(id);
-        }
 
-        public List<Answer> GetAllAnswers()
-        {
-            return _answerRepository.GetAll();
-        }
+        public List<Answer> GetAll() =>
+            _answerRepository.GetAll();
 
-        public Answer? GetAnswerById(Guid id)
-        {
-            return _answerRepository.GetById(id);
-        }
+        public Answer? GetById(Guid id) => 
+            _answerRepository.GetById(id);
 
-        public List<Answer> GetAnswersByQuestionId(int questionId)
-        {
-            return _answerRepository.GetAnswersByQuestionId(questionId);
-        }
+        public List<Answer> GetAnswersByQuestionId(int questionId) => 
+            _answerRepository.GetAnswersByQuestionId(questionId);
 
-        public void UpdateAnswer(Answer answer)
+        public Answer Update(Guid id, Answer answer)
         {
-            _answerRepository.Update(answer);
+            var existingAnswer = _answerRepository.GetById(id);
+            if (existingAnswer == null)
+            {
+                throw new ArgumentException("Answer not found");
+            }
+
+            existingAnswer.Text = answer.Text;
+            existingAnswer.AnswerId = answer.AnswerId;
+            existingAnswer.Question = answer.Question;
+            existingAnswer.IsCorrect = answer.IsCorrect;
+
+            _answerRepository.Update(existingAnswer);
+            return _answerRepository.Update(answer);
         }
     }
 }

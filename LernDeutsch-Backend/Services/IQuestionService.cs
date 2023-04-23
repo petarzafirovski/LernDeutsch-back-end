@@ -1,12 +1,8 @@
 ﻿using LernDeutsch_Backend.Models;
+using LernDeutsch_Backend.Services.Core;
 
 namespace LernDeutsch_Backend.Services;
 
-public interface IQuestionService
+public interface IQuestionService : IBaseService<Question>
 {
-    List<Question> GetAllQuestions();
-    Question? GetQuestionById(Guid id);
-    void AddQuestion(Question question);
-    void UpdateQuestion(Guid id, Question question);
-    void DeleteQuestion(Guid id);
 }
