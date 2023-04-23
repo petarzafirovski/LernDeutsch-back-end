@@ -1,47 +1,42 @@
 ﻿using LernDeutsch_Backend.Models;
-using LernDeutsch_Backend.Repositories;
+using LernDeutsch_Backend.Repositories.Implementation;
+using LernDeutsch_Backend.Services.Implementation;
 
 namespace LernDeutsch_Backend.Services
 {
     public class QuestionService : IQuestionService
     {
-        private readonly QuestionRepository _questionRepository;
+        private readonly QuestionRepositoryRepository _questionRepositoryRepository;
 
-        public QuestionService(QuestionRepository questionRepository)
+        public QuestionService(QuestionRepositoryRepository questionRepositoryRepository)
         {
-            _questionRepository = questionRepository;
+            _questionRepositoryRepository = questionRepositoryRepository;
         }
 
 
         public void AddQuestion(Question question)
         {
-            _questionRepository.AddQuestion(question);
+            _questionRepositoryRepository.Create(question);
         }
 
-        public void DeleteQuestion(int id)
+        public void DeleteQuestion(Guid id)
         {
-            var existingQuestion = _questionRepository.GetQuestionById(id);
-            if (existingQuestion == null)
-            {
-                throw new ArgumentException("Question not found");
-            }
-
-            _questionRepository.DeleteQuestion(existingQuestion);
+            _questionRepositoryRepository.Delete(id);
         }
 
         public List<Question> GetAllQuestions()
         {
-            return _questionRepository.GetAllQuestions();
+            return _questionRepositoryRepository.GetAll();
         }
 
-        public Question GetQuestionById(int id)
+        public Question? GetQuestionById(Guid id)
         {
-            return _questionRepository.GetQuestionById(id);
+            return _questionRepositoryRepository.GetById(id);
         }
 
-        public void UpdateQuestion(int id, Question question)
+        public void UpdateQuestion(Guid id, Question question)
         {
-            var existingQuestion = _questionRepository.GetQuestionById(id);
+            var existingQuestion = _questionRepositoryRepository.GetById(id);
             if (existingQuestion == null)
             {
                 throw new ArgumentException("Question not found");
@@ -51,17 +46,7 @@ namespace LernDeutsch_Backend.Services
             existingQuestion.Quiz = question.Quiz;
             existingQuestion.Answers = question.Answers;
 
-            _questionRepository.UpdateQuestion(existingQuestion);
+            _questionRepositoryRepository.Update(existingQuestion);
         }
     }
-
-    public interface IQuestionService 
-    {
-        List<Question> GetAllQuestions();
-        Question GetQuestionById(int id);
-        void AddQuestion(Question question);
-        void UpdateQuestion(int id, Question question);
-        void DeleteQuestion(int id);
-    }
-
 }

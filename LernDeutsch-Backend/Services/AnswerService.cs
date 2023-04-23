@@ -1,5 +1,6 @@
 ﻿using LernDeutsch_Backend.Models;
-using LernDeutsch_Backend.Repositories;
+using LernDeutsch_Backend.Repositories.Implementation;
+using LernDeutsch_Backend.Services.Implementation;
 using System.Collections.Generic;
 
 namespace LernDeutsch_Backend.Services
@@ -15,26 +16,22 @@ namespace LernDeutsch_Backend.Services
 
         public void AddAnswer(Answer answer)
         {
-            _answerRepository.AddAnswer(answer);
+            _answerRepository.Create(answer);
         }
 
-        public void DeleteAnswer(int id)
+        public void DeleteAnswer(Guid id)
         {
-            var answer = _answerRepository.GetAnswerById(id);
-            if (answer != null)
-            {
-                _answerRepository.DeleteAnswer(answer);
-            }
+            _answerRepository.Delete(id);
         }
 
         public List<Answer> GetAllAnswers()
         {
-            return _answerRepository.GetAllAnswers();
+            return _answerRepository.GetAll();
         }
 
-        public Answer GetAnswerById(int id)
+        public Answer? GetAnswerById(Guid id)
         {
-            return _answerRepository.GetAnswerById(id);
+            return _answerRepository.GetById(id);
         }
 
         public List<Answer> GetAnswersByQuestionId(int questionId)
@@ -44,17 +41,7 @@ namespace LernDeutsch_Backend.Services
 
         public void UpdateAnswer(Answer answer)
         {
-            _answerRepository.UpdateAnswer(answer);
+            _answerRepository.Update(answer);
         }
-    }
-
-    public interface IAnswerService
-    {
-        List<Answer> GetAllAnswers();
-        Answer GetAnswerById(int id);
-        List<Answer> GetAnswersByQuestionId(int questionId);
-        void AddAnswer(Answer answer);
-        void UpdateAnswer(Answer answer);
-        void DeleteAnswer(int id);
     }
 }
