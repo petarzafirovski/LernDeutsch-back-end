@@ -19,6 +19,10 @@ namespace LernDeutsch_Backend
             services.AddTransient<IAnswerRepository, AnswerRepository>();
             services.AddTransient<IQuizRepository, QuizRepository>();
             services.AddTransient<IQuestionRepository, QuestionRepository>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
+            services.AddTransient<ICourseStudentRepository, CourseStudentRepository>();
+            services.AddTransient<ILessonRepository, LessonRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
             return services;
         }
 
@@ -34,6 +38,11 @@ namespace LernDeutsch_Backend
         {
             services.AddScoped<IAnswerService, AnswerService>();
             services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IQuizService, QuizService>();
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<ICourseStudentService, CourseStudentService>();
+            services.AddScoped<ILessonService, LessonService>();
+            services.AddScoped<ITransactionService, TransactionService>();
             return services;
         }
     }
