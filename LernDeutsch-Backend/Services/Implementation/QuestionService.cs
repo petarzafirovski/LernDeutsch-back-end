@@ -1,28 +1,29 @@
 ﻿using LernDeutsch_Backend.Models;
+using LernDeutsch_Backend.Repositories;
 using LernDeutsch_Backend.Repositories.Implementation;
 
 namespace LernDeutsch_Backend.Services.Implementation
 {
     public class QuestionService : IQuestionService
     {
-        private readonly QuestionRepository _questionRepository;
+        private readonly IQuestionRepository _questionRepository;
 
-        public QuestionService(QuestionRepository questionRepository)
+        public QuestionService(IQuestionRepository questionRepository)
         {
             _questionRepository = questionRepository;
         }
 
 
-        public Question Create(Question question) => 
+        public Question Create(Question question) =>
             _questionRepository.Create(question);
 
-        public Question Delete(Guid id) => 
+        public Question Delete(Guid id) =>
             _questionRepository.Delete(id);
 
-        public List<Question> GetAll() => 
+        public List<Question> GetAll() =>
             _questionRepository.GetAll();
 
-        public Question? GetById(Guid id) => 
+        public Question? GetById(Guid id) =>
             _questionRepository.GetById(id);
 
         public Question Update(Guid id, Question question)
