@@ -22,6 +22,9 @@ builder.Services.AddIdentity<BaseUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDatabaseContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<IUserRepository,UserRepositoryImplementation>();
+builder.Services.AddScoped<IUserService,UserServiceImplementation>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
