@@ -34,30 +34,30 @@ namespace LernDeutsch_Backend.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
             var user = await _baseUser.FindByNameAsync(loginDto.UserName);
-            if (user != null && await _baseUser.CheckPasswordAsync(user, loginDto.Password))
-            {
-                var userRoles = await _baseUser.GetRolesAsync(user);
 
-                var authClaims = new List<Claim>
+            if (user == null || !await _baseUser.CheckPasswordAsync(user, loginDto.Password))
+                return Unauthorized();
+
+            var userRoles = await _baseUser.GetRolesAsync(user);
+
+            var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-                }
-
-                var token = GetToken(authClaims);
-
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
             }
-            return Unauthorized();
+
+            var token = GetToken(authClaims);
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo
+            });
         }
 
         [HttpPost]
@@ -81,8 +81,9 @@ namespace LernDeutsch_Backend.Controllers
             if (!result.Succeeded)
             {
                 StringBuilder stringBuilderErrorMessages = new();
-                foreach(var errorMessage in result.Errors){
-                    stringBuilderErrorMessages.AppendLine(errorMessage.Code+", Message:"+errorMessage.Description);
+                foreach (var errorMessage in result.Errors)
+                {
+                    stringBuilderErrorMessages.AppendLine(errorMessage.Code + ", Message:" + errorMessage.Description);
                 }
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDTO { Status = "Error", Message = stringBuilderErrorMessages.ToString() });
             }
@@ -102,8 +103,8 @@ namespace LernDeutsch_Backend.Controllers
                     default:
                         return StatusCode(StatusCodes.Status400BadRequest, new ResponseDTO { Status = "Error", Message = "The provided role does not exist within the system." });
                 }
-            }         
-                       
+            }
+
             await _baseUser.AddToRoleAsync(user, registerDto.Role);
 
             return Ok(new ResponseDTO { Status = "Success", Message = "User created successfully!" });
