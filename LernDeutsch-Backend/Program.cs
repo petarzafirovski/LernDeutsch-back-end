@@ -13,6 +13,8 @@ builder.Services.AddDbContext<ApplicationDatabaseContext>(x => x.UseSqlServer(co
 builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

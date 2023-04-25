@@ -1,5 +1,7 @@
 ﻿using LernDeutsch_Backend.Models.Identity;
 using LernDeutsch_Backend.Models.Identity.DTO;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,15 +20,18 @@ namespace LernDeutsch_Backend.Controllers
         private readonly UserManager<BaseUser> _baseUser;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public AuthController(
             UserManager<BaseUser> baseUser,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IHttpContextAccessor contextAccessor)
         {
             _baseUser = baseUser;
             _roleManager = roleManager;
             _configuration = configuration;
+            _contextAccessor = contextAccessor;
         }
 
         [HttpPost]
@@ -58,6 +63,19 @@ namespace LernDeutsch_Backend.Controllers
                 token = new JwtSecurityTokenHandler().WriteToken(token),
                 expiration = token.ValidTo
             });
+        }
+
+        [HttpPost]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var user = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (user != null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDTO { Status = "Error", Message = "User did not log out successfully" });
+            }
+            return Ok();
         }
 
         [HttpPost]
