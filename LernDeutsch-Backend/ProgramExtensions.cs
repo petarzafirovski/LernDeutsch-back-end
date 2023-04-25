@@ -4,6 +4,7 @@ using LernDeutsch_Backend.Repositories;
 using LernDeutsch_Backend.Repositories.Implementation;
 using LernDeutsch_Backend.Services;
 using LernDeutsch_Backend.Services.Implementation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace LernDeutsch_Backend
@@ -14,7 +15,7 @@ namespace LernDeutsch_Backend
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDatabaseContext>(x => x.UseSqlServer(connectionString));
-            services.AddIdentityCore<BaseUser>().AddEntityFrameworkStores<ApplicationDatabaseContext>();
+            services.AddIdentity<BaseUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDatabaseContext>().AddDefaultTokenProviders();
 
             services.AddTransient<IAnswerRepository, AnswerRepository>();
             services.AddTransient<IQuizRepository, QuizRepository>();
