@@ -5,8 +5,8 @@ using LernDeutsch_Backend.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-ConfigurationManager configuration = builder.Configuration;
-configuration["JWT:Secret"] = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+builder.Configuration["JWT:Secret"] = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+
 
 builder.Services.AddAuthorization();
 
@@ -23,17 +23,25 @@ builder.Services.AddSwaggerSecurity();
 
 builder.Services.Configure(builder.Configuration);
 
+
 builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddServices();
 
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDatabaseContext>();
+    dataContext.Database.Migrate();
 }
+
+// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+app.UseSwagger();
+    app.UseSwaggerUI();
+//}
 
 app.UseCors("FrontendOrigins");
 
@@ -43,13 +51,5 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 app.MapControllers();
-
-Console.WriteLine("Connection String:");
-Console.WriteLine(builder.Configuration["ConnectionStrings:DefaultConnection"]);
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDatabaseContext>();
-    dataContext.Database.Migrate();
-}
 
 app.Run();

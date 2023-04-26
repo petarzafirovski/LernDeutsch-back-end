@@ -5,7 +5,7 @@ namespace LernDeutsch_Backend.Models
     public class Lesson
     {
         [Key]
-        public int LessonId { get; set; }
+        public Guid LessonId { get; set; }
         [Required]
         public string? Title { get; set; }
         [Required]

@@ -158,7 +158,7 @@ namespace LernDeutsch_Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Course",
+                name: "Courses",
                 columns: table => new
                 {
                     CourseId = table.Column<int>(type: "int", nullable: false)
@@ -171,9 +171,9 @@ namespace LernDeutsch_Backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Course", x => x.CourseId);
+                    table.PrimaryKey("PK_Courses", x => x.CourseId);
                     table.ForeignKey(
-                        name: "FK_Course_AspNetUsers_TutorId",
+                        name: "FK_Courses_AspNetUsers_TutorId",
                         column: x => x.TutorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -181,7 +181,7 @@ namespace LernDeutsch_Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseStudent",
+                name: "CourseStudents",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -190,43 +190,42 @@ namespace LernDeutsch_Backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseStudent", x => x.Id);
+                    table.PrimaryKey("PK_CourseStudents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CourseStudent_AspNetUsers_StudentId",
+                        name: "FK_CourseStudents_AspNetUsers_StudentId",
                         column: x => x.StudentId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CourseStudent_Course_CourseId",
+                        name: "FK_CourseStudents_Courses_CourseId",
                         column: x => x.CourseId,
-                        principalTable: "Course",
+                        principalTable: "Courses",
                         principalColumn: "CourseId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lesson",
+                name: "Lessons",
                 columns: table => new
                 {
-                    LessonId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LessonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lesson", x => x.LessonId);
+                    table.PrimaryKey("PK_Lessons", x => x.LessonId);
                     table.ForeignKey(
-                        name: "FK_Lesson_Course_CourseId",
+                        name: "FK_Lessons_Courses_CourseId",
                         column: x => x.CourseId,
-                        principalTable: "Course",
+                        principalTable: "Courses",
                         principalColumn: "CourseId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transaction",
+                name: "Transactions",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -238,17 +237,17 @@ namespace LernDeutsch_Backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transaction", x => x.id);
+                    table.PrimaryKey("PK_Transactions", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Transaction_AspNetUsers_BoughtById",
+                        name: "FK_Transactions_AspNetUsers_BoughtById",
                         column: x => x.BoughtById,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Transaction_Course_CourseId",
+                        name: "FK_Transactions_Courses_CourseId",
                         column: x => x.CourseId,
-                        principalTable: "Course",
+                        principalTable: "Courses",
                         principalColumn: "CourseId");
                 });
 
@@ -259,15 +258,15 @@ namespace LernDeutsch_Backend.Migrations
                     QuizId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LessonId = table.Column<int>(type: "int", nullable: false)
+                    LessonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Quizzes", x => x.QuizId);
                     table.ForeignKey(
-                        name: "FK_Quizzes_Lesson_LessonId",
+                        name: "FK_Quizzes_Lessons_LessonId",
                         column: x => x.LessonId,
-                        principalTable: "Lesson",
+                        principalTable: "Lessons",
                         principalColumn: "LessonId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -357,23 +356,23 @@ namespace LernDeutsch_Backend.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Course_TutorId",
-                table: "Course",
+                name: "IX_Courses_TutorId",
+                table: "Courses",
                 column: "TutorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseStudent_CourseId",
-                table: "CourseStudent",
+                name: "IX_CourseStudents_CourseId",
+                table: "CourseStudents",
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseStudent_StudentId",
-                table: "CourseStudent",
+                name: "IX_CourseStudents_StudentId",
+                table: "CourseStudents",
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lesson_CourseId",
-                table: "Lesson",
+                name: "IX_Lessons_CourseId",
+                table: "Lessons",
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
@@ -387,13 +386,13 @@ namespace LernDeutsch_Backend.Migrations
                 column: "LessonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transaction_BoughtById",
-                table: "Transaction",
+                name: "IX_Transactions_BoughtById",
+                table: "Transactions",
                 column: "BoughtById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transaction_CourseId",
-                table: "Transaction",
+                name: "IX_Transactions_CourseId",
+                table: "Transactions",
                 column: "CourseId");
         }
 
@@ -418,10 +417,10 @@ namespace LernDeutsch_Backend.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CourseStudent");
+                name: "CourseStudents");
 
             migrationBuilder.DropTable(
-                name: "Transaction");
+                name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "Questions");
@@ -433,10 +432,10 @@ namespace LernDeutsch_Backend.Migrations
                 name: "Quizzes");
 
             migrationBuilder.DropTable(
-                name: "Lesson");
+                name: "Lessons");
 
             migrationBuilder.DropTable(
-                name: "Course");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
