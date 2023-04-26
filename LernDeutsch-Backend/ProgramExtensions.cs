@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LernDeutsch_Backend.Services.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using LernDeutsch_Backend.Repositories.Identity;
 
 namespace LernDeutsch_Backend
 {
@@ -28,6 +30,7 @@ namespace LernDeutsch_Backend
             services.AddTransient<ICourseStudentRepository, CourseStudentRepository>();
             services.AddTransient<ILessonRepository, LessonRepository>();
             services.AddTransient<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IUserRepository, UserRepositoryImplementation>();
             return services;
         }
 
@@ -48,10 +51,11 @@ namespace LernDeutsch_Backend
             services.AddScoped<ICourseStudentService, CourseStudentService>();
             services.AddScoped<ILessonService, LessonService>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IUserService, UserServiceImplementation>();
             return services;
         }
 
-        public static IServiceCollection AddJWT(this IServiceCollection services, ConfigurationManager configuration)
+        public static IServiceCollection AddJwt(this IServiceCollection services, ConfigurationManager configuration)
         {
             services.AddAuthentication(options =>
             {
