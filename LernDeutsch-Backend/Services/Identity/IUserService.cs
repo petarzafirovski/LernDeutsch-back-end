@@ -10,5 +10,6 @@ namespace LernDeutsch_Backend.Services.Identity
         List<BaseUser> GetUsers();
         void UpdateUser(UserDTO userDTO);
         void DeleteUser(string username);
+        BaseUser GetUserById(string id);
     }
 }

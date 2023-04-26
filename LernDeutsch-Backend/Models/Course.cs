@@ -7,7 +7,7 @@ namespace LernDeutsch_Backend.Models
     public class Course
     {
         [Key]
-        public int CourseId { get; set; }
+        public Guid CourseId { get; set; }
         [Required]
         public string? Name { get; set; }
         [Required]
@@ -17,8 +17,8 @@ namespace LernDeutsch_Backend.Models
         [Required]
         public Tutor Tutor { get; set; }
 
-        public virtual List<CourseStudent> Students { get; set; } = new List<CourseStudent>();
-        public virtual List<Lesson> Lessons { get; set; } = new List<Lesson>();
+        public virtual List<CourseStudent> Students { get; set; } = new();
+        public virtual List<Lesson> Lessons { get; set; } = new();
 
        
 

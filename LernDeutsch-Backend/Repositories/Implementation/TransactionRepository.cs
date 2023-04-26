@@ -18,11 +18,19 @@ namespace LernDeutsch_Backend.Repositories.Implementation
         public Transaction? GetById(Guid id) =>
             _context.Transactions.Find(id);
 
-        public Transaction Create(Transaction entity) =>
-            _context.Transactions.Add(entity).Entity;
+        public Transaction Create(Transaction entity)
+        {
+            var record = _context.Transactions.Add(entity).Entity;
+            _context.SaveChanges();
+            return record;
+        }
 
-        public Transaction Update(Transaction entity) =>
-            _context.Transactions.Update(entity).Entity;
+        public Transaction Update(Transaction entity)
+        {
+            var record = _context.Transactions.Update(entity).Entity;
+            _context.SaveChanges();
+            return record;
+        }
 
         public Transaction Delete(Guid id) =>
             _context.Transactions.Remove(GetById(id)!).Entity;

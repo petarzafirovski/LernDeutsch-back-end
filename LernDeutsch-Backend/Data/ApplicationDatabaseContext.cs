@@ -35,7 +35,8 @@ namespace LernDeutsch_Backend.Data
 
             builder.Entity<Course>()
                 .HasOne(e => e.Tutor)
-                .WithMany(e => e.Courses);
+                .WithMany(e => e.Courses)
+                .IsRequired(false); // TODO: Clean up after implementing Tutors properly
 
             builder.Entity<Lesson>()
                 .HasOne(e => e.Course)

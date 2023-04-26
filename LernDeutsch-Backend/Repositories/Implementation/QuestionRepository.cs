@@ -11,21 +11,29 @@ namespace LernDeutsch_Backend.Repositories.Implementation
         {
             _context = context;
         }
-        
+
         public List<Question> GetAll() =>
             _context.Questions.ToList();
 
         public Question? GetById(Guid id) =>
             _context.Questions.Find(id);
 
-        public Question Create(Question entity) =>
-            _context.Questions.Add(entity).Entity;
+        public Question Create(Question entity)
+        {
+            var record = _context.Questions.Add(entity).Entity;
+            _context.SaveChanges();
+            return record;
+        }
 
-        public Question Update(Question entity) =>
-            _context.Questions.Update(entity).Entity;
+        public Question Update(Question entity)
+        {
+            var record = _context.Questions.Update(entity).Entity;
+            _context.SaveChanges();
+            return record;
+        }
 
         public Question Delete(Guid id) =>
             _context.Questions.Remove(GetById(id)!).Entity;
-}
+    }
 
 }

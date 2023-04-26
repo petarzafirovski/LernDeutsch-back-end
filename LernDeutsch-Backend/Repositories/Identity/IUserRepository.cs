@@ -9,5 +9,6 @@ namespace LernDeutsch_Backend.Repositories.Identity
         void UpdateUser(UserDTO userDTO);
         void DeleteUser(string username);
         List<BaseUser> GetAllUsers();
+        BaseUser GetUserById(string id);
     }
 }

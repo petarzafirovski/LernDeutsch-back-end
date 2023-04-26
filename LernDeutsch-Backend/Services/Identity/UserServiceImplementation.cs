@@ -23,6 +23,11 @@ namespace LernDeutsch_Backend.Services.Identity
             return userRepository.GetUserByUsername(username);
         }
 
+        public BaseUser GetUserById(string id)
+        {
+            return userRepository.GetUserById(id);
+        }
+
         public List<BaseUser> GetUsers()
         {
             return userRepository.GetAllUsers();
