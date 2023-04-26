@@ -7,7 +7,7 @@ namespace LernDeutsch_Backend.Controllers
 {
     [Route("api/users")]
     [ApiController]
-    [Authorize(Roles ="Student,Tutor")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
