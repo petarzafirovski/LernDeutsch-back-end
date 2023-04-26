@@ -7,8 +7,8 @@ namespace LernDeutsch_Backend.Data
 {
     public class ApplicationDatabaseContext : IdentityDbContext<BaseUser>
     {
-        public DbSet<Student> students { get; set; }
-        public DbSet<Tutor> tutors { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Tutor> Tutors { get; set; }
 
         public DbSet<Quiz> Quizzes { get; set; }
         

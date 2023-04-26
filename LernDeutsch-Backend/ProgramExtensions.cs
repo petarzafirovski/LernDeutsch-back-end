@@ -19,7 +19,7 @@ namespace LernDeutsch_Backend
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDatabaseContext>(x => x.UseSqlServer(connectionString));
-            services.AddIdentity<BaseUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDatabaseContext>().AddDefaultTokenProviders();
+            services.AddIdentity<BaseUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDatabaseContext>().AddDefaultTokenProviders();
 
             services.AddTransient<IAnswerRepository, AnswerRepository>();
             services.AddTransient<IQuizRepository, QuizRepository>();
@@ -104,6 +104,16 @@ namespace LernDeutsch_Backend
                     }
                 });
             });
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureCors(this IServiceCollection services)
+        {
+            services.AddCors(options => options.AddPolicy(name: "FrontendOrigins", policy =>
+                {
+                    policy.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                }));
 
             return services;
         }

@@ -1,0 +1,26 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LernDeutsch_Backend.Models.Identity.DTO
+{
+    public class RegisterDTO
+    {
+        [Required]
+        public string UserName { get; set; } = null!;
+
+        [Required]
+        public string FirstName { get; set; } = null!;
+
+        [Required]
+        public string LastName { get; set; } = null!;
+
+        [EmailAddress]
+        [Required]
+        public string Email { get; set; } = null!;
+
+        [Required]
+        public string Password { get; set; } = null!;
+
+        [Required]
+        public string Role { get; set; } = null!;
+    }
+}
