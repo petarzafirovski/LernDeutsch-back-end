@@ -1,8 +1,6 @@
 ﻿using LernDeutsch_Backend.Dtos;
 using LernDeutsch_Backend.Models;
 using LernDeutsch_Backend.Services;
-using LernDeutsch_Backend.Services.Implementation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LernDeutsch_Backend.Controllers
@@ -22,6 +20,9 @@ namespace LernDeutsch_Backend.Controllers
 
         [HttpGet]
         public IActionResult GetAll() => Ok(_courseService.GetAll());
+
+        [HttpGet("courses-by-levels")]
+        public IActionResult GetCoursesByLevels() =>  Ok(_courseService.GetCoursesByLevels());
 
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id) => Ok(_courseService.GetById(id));

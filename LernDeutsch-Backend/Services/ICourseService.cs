@@ -7,5 +7,6 @@ namespace LernDeutsch_Backend.Services
     public interface ICourseService : IBaseService<Course>
     {
         Course Create(CourseCreateDto  dto);
+        Dictionary<string, List<Course>> GetCoursesByLevels();
     }
 }

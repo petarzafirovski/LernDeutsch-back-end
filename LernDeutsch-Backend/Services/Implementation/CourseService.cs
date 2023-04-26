@@ -44,5 +44,10 @@ namespace LernDeutsch_Backend.Services.Implementation
                 Price = dto.Price
             });
         }
+
+        public Dictionary<string, List<Course>> GetCoursesByLevels()
+        {
+           return _courseRepository.GetAll().GroupBy(x => x.Level).ToDictionary(x => x.Key, x => x.ToList());
+        }
     }
 }

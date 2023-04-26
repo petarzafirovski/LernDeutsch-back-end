@@ -11,7 +11,7 @@ namespace LernDeutsch_Backend.Models
         [Required]
         public string? Name { get; set; }
         [Required]
-        public string? Level { get; set; }
+        public string Level { get; set; } = null!;
         public int Length { get; set; }
         public double Price { get; set; }
         [Required]
