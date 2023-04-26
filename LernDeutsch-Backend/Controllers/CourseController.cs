@@ -1,6 +1,7 @@
 ﻿using LernDeutsch_Backend.Dtos;
 using LernDeutsch_Backend.Models;
 using LernDeutsch_Backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LernDeutsch_Backend.Controllers
@@ -8,6 +9,7 @@ namespace LernDeutsch_Backend.Controllers
 
     [Route("api/course")]
     [ApiController]
+    [Authorize]
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _courseService;
@@ -28,12 +30,15 @@ namespace LernDeutsch_Backend.Controllers
         public IActionResult GetById(Guid id) => Ok(_courseService.GetById(id));
 
         [HttpPost]
+        [Authorize(Roles = "Tutor")]
         public IActionResult Create([FromBody] CourseCreateDto course) => Ok(_courseService.Create(course));
 
         [HttpPut]
+        [Authorize(Roles = "Tutor")]
         public IActionResult Update([FromBody] Course course) => Ok(_courseService.Update(course.CourseId, course));
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Tutor")]
         public IActionResult Delete(Guid id) => Ok(_courseService.Delete(id));
     }
 }

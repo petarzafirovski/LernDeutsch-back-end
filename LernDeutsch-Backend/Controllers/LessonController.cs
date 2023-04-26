@@ -10,6 +10,7 @@ namespace LernDeutsch_Backend.Controllers
 
     [Route("api/lesson")]
     [ApiController]
+    [Authorize]
     public class LessonController : ControllerBase
     {
         private readonly ILessonService _lessonService;
@@ -27,12 +28,15 @@ namespace LernDeutsch_Backend.Controllers
         public IActionResult GetById(Guid id) => Ok(_lessonService.GetById(id));
 
         [HttpPost]
+        [Authorize(Roles = "Tutor")]
         public IActionResult Create([FromBody] LessonCreateDto lesson) => Ok(_lessonService.Create(lesson));
 
         [HttpPut]
+        [Authorize(Roles = "Tutor")]
         public IActionResult Update([FromBody] Lesson lesson) => Ok(_lessonService.Update(lesson.LessonId, lesson));
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Tutor")]
         public IActionResult Delete(Guid id) => Ok(_lessonService.Delete(id));
     }
 }
