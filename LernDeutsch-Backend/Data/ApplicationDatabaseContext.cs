@@ -15,6 +15,11 @@ namespace LernDeutsch_Backend.Data
         public DbSet<Question> Questions { get; set; }
 
         public DbSet<Answer> Answers { get; set; }
+        
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseStudent> CourseStudents { get; set; }
 
         public ApplicationDatabaseContext(DbContextOptions<ApplicationDatabaseContext> options) : base(options)
         {

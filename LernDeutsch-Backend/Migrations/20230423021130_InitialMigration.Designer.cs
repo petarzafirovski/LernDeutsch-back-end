@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LernDeutsch_Backend.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20230415195110_InitialMigration")]
+    [Migration("20230423021130_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,11 +26,9 @@ namespace LernDeutsch_Backend.Migrations
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Answer", b =>
                 {
-                    b.Property<int>("AnswerId")
+                    b.Property<Guid>("AnswerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnswerId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("bit");
@@ -46,7 +44,7 @@ namespace LernDeutsch_Backend.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answer");
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Course", b =>
@@ -227,7 +225,7 @@ namespace LernDeutsch_Backend.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("Question");
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Quiz", b =>
@@ -249,7 +247,7 @@ namespace LernDeutsch_Backend.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("Quiz");
+                    b.ToTable("Quizzes");
                 });
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Transaction", b =>

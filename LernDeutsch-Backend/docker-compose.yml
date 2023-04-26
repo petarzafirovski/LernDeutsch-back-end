@@ -6,6 +6,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     user: root
     container_name: sqlserver
+    user: root
     ports:
       - "1433:1433"
     environment:
