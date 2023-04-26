@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LernDeutsch_Backend.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20230423021130_InitialMigration")]
+    [Migration("20230426065352_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,11 +49,9 @@ namespace LernDeutsch_Backend.Migrations
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Course", b =>
                 {
-                    b.Property<int>("CourseId")
+                    b.Property<Guid>("CourseId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Length")
                         .HasColumnType("int");
@@ -70,14 +68,13 @@ namespace LernDeutsch_Backend.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("TutorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CourseId");
 
                     b.HasIndex("TutorId");
 
-                    b.ToTable("Course");
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.CourseStudent", b =>
@@ -86,8 +83,8 @@ namespace LernDeutsch_Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(450)");
@@ -98,7 +95,7 @@ namespace LernDeutsch_Backend.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("CourseStudent");
+                    b.ToTable("CourseStudents");
                 });
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.BaseUser", b =>
@@ -182,28 +179,24 @@ namespace LernDeutsch_Backend.Migrations
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Lesson", b =>
                 {
-                    b.Property<int>("LessonId")
+                    b.Property<Guid>("LessonId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LessonId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LessonId");
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lesson");
+                    b.ToTable("Lessons");
                 });
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Question", b =>
@@ -236,8 +229,8 @@ namespace LernDeutsch_Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuizId"), 1L, 1);
 
-                    b.Property<int>("LessonId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -263,8 +256,8 @@ namespace LernDeutsch_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TransactionStatus")
                         .HasColumnType("int");
@@ -278,7 +271,7 @@ namespace LernDeutsch_Backend.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Transaction");
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -443,9 +436,7 @@ namespace LernDeutsch_Backend.Migrations
                 {
                     b.HasOne("LernDeutsch_Backend.Models.Identity.Tutor", "Tutor")
                         .WithMany("Courses")
-                        .HasForeignKey("TutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TutorId");
 
                     b.Navigation("Tutor");
                 });

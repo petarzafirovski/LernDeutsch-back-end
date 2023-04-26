@@ -18,11 +18,19 @@ namespace LernDeutsch_Backend.Repositories.Implementation
         public Course? GetById(Guid id) =>
             _context.Courses.Find(id);
 
-        public Course Create(Course entity) =>
-            _context.Courses.Add(entity).Entity;
+        public Course Create(Course entity)
+        {
+            var record = _context.Courses.Add(entity).Entity;
+            _context.SaveChanges();
+            return record;
+        }
 
-        public Course Update(Course entity) =>
-            _context.Courses.Update(entity).Entity;
+        public Course Update(Course entity)
+        {
+            var record = _context.Courses.Update(entity).Entity;
+            _context.SaveChanges();
+            return record;
+        }
 
         public Course Delete(Guid id) =>
             _context.Courses.Remove(GetById(id)!).Entity;

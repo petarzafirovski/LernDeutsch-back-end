@@ -26,17 +26,6 @@ namespace LernDeutsch_Backend.Data
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseSqlServer(connectionString);
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -46,7 +35,8 @@ namespace LernDeutsch_Backend.Data
 
             builder.Entity<Course>()
                 .HasOne(e => e.Tutor)
-                .WithMany(e => e.Courses);
+                .WithMany(e => e.Courses)
+                .IsRequired(false); // TODO: Clean up after implementing Tutors properly
 
             builder.Entity<Lesson>()
                 .HasOne(e => e.Course)

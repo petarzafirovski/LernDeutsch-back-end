@@ -71,6 +71,12 @@ namespace LernDeutsch_Backend.Repositories.Identity
             return user.Result;
         }
 
+        public BaseUser GetUserById(string id)
+        {
+            var user = userManager.FindByIdAsync(id);
+            return user.Result;
+        }
+
         public void UpdateUser(UserDTO userDTO)
         {
             var user = userManager.FindByIdAsync(userDTO.Id).Result;

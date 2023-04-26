@@ -19,11 +19,19 @@ namespace LernDeutsch_Backend.Repositories.Implementation
         public Quiz? GetById(Guid id) =>
             _context.Quizzes.Find(id);
 
-        public Quiz Create(Quiz entity) =>
-            _context.Quizzes.Add(entity).Entity;
+        public Quiz Create(Quiz entity)
+        {
+            var record = _context.Quizzes.Add(entity).Entity;
+            _context.SaveChanges();
+            return record;
+        }
 
-        public Quiz Update(Quiz entity) =>
-            _context.Quizzes.Update(entity).Entity;
+        public Quiz Update(Quiz entity)
+        {
+            var record = _context.Quizzes.Update(entity).Entity;
+            _context.SaveChanges();
+            return record;
+        }
 
         public Quiz Delete(Guid id) =>
             _context.Quizzes.Remove(GetById(id)!).Entity;
