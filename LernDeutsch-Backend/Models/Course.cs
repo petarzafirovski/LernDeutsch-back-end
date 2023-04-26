@@ -15,7 +15,7 @@ namespace LernDeutsch_Backend.Models
         public int Length { get; set; }
         public double Price { get; set; }
         [Required]
-        public Tutor Tutor { get; set; }
+        public Tutor Tutor { get; set; } = null!;
 
         public virtual List<CourseStudent> Students { get; set; } = new();
         public virtual List<Lesson> Lessons { get; set; } = new();

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LernDeutsch_Backend.Migrations
 {
     [DbContext(typeof(ApplicationDatabaseContext))]
-    [Migration("20230426065352_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230426163815_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
