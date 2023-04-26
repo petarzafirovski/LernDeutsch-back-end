@@ -1,33 +1,12 @@
 using LernDeutsch_Backend;
+using Microsoft.AspNetCore;
 using System.Security.Cryptography;
+using LernDeutsch_Backend.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 configuration["JWT:Secret"] = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-
-<<<<<<< HEAD
-// Add services to the container.
-=======
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.SaveToken = true;
-    options.RequireHttpsMetadata = false;
-    options.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidAudience = configuration["JWT:Audience"],
-        ValidIssuer = configuration["JWT:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
-    };
-});
->>>>>>> c2765a67e8d6e50f51de22a25f1ef1509072bc01
 
 builder.Services.AddAuthorization();
 
@@ -63,7 +42,14 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
-
 app.MapControllers();
+
+Console.WriteLine("Connection String:");
+Console.WriteLine(builder.Configuration["ConnectionStrings:DefaultConnection"]);
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDatabaseContext>();
+    dataContext.Database.Migrate();
+}
 
 app.Run();

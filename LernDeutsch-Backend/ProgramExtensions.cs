@@ -20,6 +20,7 @@ namespace LernDeutsch_Backend
         public static IServiceCollection AddRepositories(this IServiceCollection services, ConfigurationManager configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
+            Console.WriteLine(connectionString);
             services.AddDbContext<ApplicationDatabaseContext>(x => x.UseSqlServer(connectionString));
             services.AddIdentity<BaseUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDatabaseContext>().AddDefaultTokenProviders();
 

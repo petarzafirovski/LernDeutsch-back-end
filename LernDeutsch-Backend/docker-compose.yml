@@ -2,11 +2,21 @@
 version: "3.7"
 
 services:
+  lern-deutsch-backend:
+    build: .
+    restart: always
+    image: lern-deutsch-backend:latest
+    container_name: lern-deutsch
+    depends_on:
+     - sqlserver
+    environment:
+     - ASPNETCORE_ENVIRONMENT=Production
+    network_mode: host
+  
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     user: root
-    container_name: sqlserver
-    user: root
+    container_name: mssql_server
     ports:
       - "1433:1433"
     environment:
