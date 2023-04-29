@@ -38,7 +38,7 @@ namespace LernDeutsch_Backend.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
-            var user = await _baseUser.FindByNameAsync(loginDto.UserName);
+            var user = await _baseUser.FindByEmailAsync(loginDto.Email);
 
             if (user == null || !await _baseUser.CheckPasswordAsync(user, loginDto.Password))
                 return Unauthorized();
