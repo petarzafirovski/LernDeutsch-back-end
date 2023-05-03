@@ -5,7 +5,7 @@ namespace LernDeutsch_Backend.Models
     public class Question
     {
         [Key]
-        public int QuestionId { get; set; }
+        public Guid QuestionId { get; set; }
         [Required]
         public string? Text { get; set; }
         [Required]

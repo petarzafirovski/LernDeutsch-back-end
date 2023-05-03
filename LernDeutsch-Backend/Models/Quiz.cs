@@ -6,7 +6,7 @@ namespace LernDeutsch_Backend.Models
     public class Quiz
     {
         [Key]
-        public int QuizId { get; set; }
+        public Guid QuizId { get; set; }
         [Required]
         public string? Title { get; set; }
         [Required]

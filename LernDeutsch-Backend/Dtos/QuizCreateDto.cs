@@ -5,9 +5,8 @@ namespace LernDeutsch_Backend.Dtos
     public class QuizCreateDto
     {
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty!;
         [Required]
-        public int LessonId { get; set; }
-        public List<QuestionCreateDto> Questions { get; set; }
+        public string LessonId { get; set; } = string.Empty!;
     }
 }
