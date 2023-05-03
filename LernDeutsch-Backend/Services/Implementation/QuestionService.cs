@@ -1,4 +1,5 @@
-﻿using LernDeutsch_Backend.Models;
+﻿using LernDeutsch_Backend.Dtos;
+using LernDeutsch_Backend.Models;
 using LernDeutsch_Backend.Repositories;
 using LernDeutsch_Backend.Repositories.Implementation;
 
@@ -7,15 +8,29 @@ namespace LernDeutsch_Backend.Services.Implementation
     public class QuestionService : IQuestionService
     {
         private readonly IQuestionRepository _questionRepository;
+        private readonly IQuizRepository _quizRepository;
 
-        public QuestionService(IQuestionRepository questionRepository)
+        public QuestionService(IQuestionRepository questionRepository, IQuizRepository quizRepository)
         {
             _questionRepository = questionRepository;
+            _quizRepository = quizRepository;
         }
 
 
         public Question Create(Question question) =>
             _questionRepository.Create(question);
+
+        public Question CreateQuestion(QuestionCreateDto dto)
+        {
+            var quiz = _quizRepository.GetById(new Guid(dto.QuizId));
+            if (quiz == null)
+                throw new Exception("Quiz cannot be null.");
+            return _questionRepository.Create(new Question
+            {
+                Text = dto.Text,
+                Quiz = quiz
+            });
+        }
 
         public Question Delete(Guid id) =>
             _questionRepository.Delete(id);

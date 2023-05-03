@@ -1,17 +1,18 @@
-﻿using LernDeutsch_Backend.Models;
+﻿using LernDeutsch_Backend.Dtos.LernDeutsch_Backend.Models.Dtos;
+using LernDeutsch_Backend.Models;
 using LernDeutsch_Backend.Repositories;
-using LernDeutsch_Backend.Repositories.Implementation;
-using System.Collections.Generic;
 
 namespace LernDeutsch_Backend.Services.Implementation
 {
     public class AnswerService : IAnswerService
     {
         private readonly IAnswerRepository _answerRepository;
+        private readonly IQuestionRepository _quiestionRepository;
 
-        public AnswerService(IAnswerRepository answerRepository)
+        public AnswerService(IAnswerRepository answerRepository, IQuestionRepository questionRepository)
         {
             _answerRepository = answerRepository;
+            _quiestionRepository = questionRepository;
         }
 
         public Answer Create(Answer answer) =>
@@ -26,7 +27,7 @@ namespace LernDeutsch_Backend.Services.Implementation
         public Answer? GetById(Guid id) => 
             _answerRepository.GetById(id);
 
-        public List<Answer> GetAnswersByQuestionId(int questionId) => 
+        public List<Answer> GetAnswersByQuestionId(Guid questionId) => 
             _answerRepository.GetAnswersByQuestionId(questionId);
 
         public Answer Update(Guid id, Answer answer)
@@ -44,6 +45,20 @@ namespace LernDeutsch_Backend.Services.Implementation
 
             _answerRepository.Update(existingAnswer);
             return _answerRepository.Update(answer);
+        }
+
+        public Answer CreateAnswer(AnswerCreateDto answerCreateDto)
+        {
+            var question = _quiestionRepository.GetById(answerCreateDto.QuestionId);
+            if (question == null)
+                throw new Exception("Question cannot be null.");
+
+            return _answerRepository.Create(new Answer
+            {
+                IsCorrect = answerCreateDto.IsCorrect,
+                Text = answerCreateDto.Text,
+                Question = question
+            }); 
         }
     }
 }

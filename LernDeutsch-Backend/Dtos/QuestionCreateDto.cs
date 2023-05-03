@@ -8,7 +8,7 @@ namespace LernDeutsch_Backend.Dtos
         [Required]
         public string Text { get; set; }
         [Required]
-        public int QuizId { get; set; }
+        public string QuizId { get; set; }
         public List<AnswerCreateDto> Answers { get; set; }
     }
 }
