@@ -5,5 +5,5 @@ namespace LernDeutsch_Backend.Repositories;
 
 public interface IAnswerRepository : IBaseRepository<Answer>
 {
-    List<Answer> GetAnswersByQuestionId(int questionId);
+    List<Answer> GetAnswersByQuestionId(Guid questionId);
 }

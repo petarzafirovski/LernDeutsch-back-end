@@ -12,7 +12,7 @@ namespace LernDeutsch_Backend.Repositories.Implementation
             _context = context;
         }
 
-        public List<Answer> GetAnswersByQuestionId(int questionId) =>
+        public List<Answer> GetAnswersByQuestionId(Guid questionId) =>
             _context.Answers.Where(a => a.Question.QuestionId == questionId).ToList();
 
         public List<Answer> GetAll() =>
