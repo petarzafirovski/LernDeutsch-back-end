@@ -19,17 +19,17 @@ namespace LernDeutsch_Backend.Services.Stripe
             _tokenService = tokenService;
         }
 
-        public async Task<StripeCustomer> AddStripeCustomerAsync(AddStripeCustomer customer, CancellationToken ct)
+        public async Task<StripeCustomer> AddStripeCustomerAsync(string Email, string Name, AddStripeCard card, CancellationToken ct)
         {
             TokenCreateOptions tokenOptions = new()
             {
                 Card = new TokenCardOptions
                 {
-                    Name = customer.Name,
-                    Number = customer.CreditCard.CardNumber,
-                    ExpYear = customer.CreditCard.ExpirationYear,
-                    ExpMonth = customer.CreditCard.ExpirationMonth,
-                    Cvc = customer.CreditCard.Cvc
+                    Name = Name,
+                    Number = card.CardNumber,
+                    ExpYear = card.ExpirationYear,
+                    ExpMonth = card.ExpirationMonth,
+                    Cvc = card.Cvc
                 }
             };
 
@@ -37,8 +37,8 @@ namespace LernDeutsch_Backend.Services.Stripe
 
             CustomerCreateOptions customerOptions = new()
             {
-                Name = customer.Name,
-                Email = customer.Email,
+                Name = Name,
+                Email = Email,
                 Source = stripeToken.Id
             };
 
@@ -50,10 +50,12 @@ namespace LernDeutsch_Backend.Services.Stripe
 
         public async Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct)
         {
+            var getStripeCustomer = await AddStripeCustomerAsync(payment.Email, payment.Name, payment.CreditCard, ct);
+
             ChargeCreateOptions paymentOptions = new()
             {
-                Customer = payment.CustomerId,
-                ReceiptEmail = payment.ReceiptEmail,
+                Customer = getStripeCustomer.CustomerId,
+                ReceiptEmail = getStripeCustomer.Email,
                 Description = payment.Description,
                 Currency = payment.Currency,
                 Amount = payment.Amount

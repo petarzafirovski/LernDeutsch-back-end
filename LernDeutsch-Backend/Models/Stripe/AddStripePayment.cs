@@ -3,10 +3,11 @@
 namespace LernDeutsch_Backend.Models.Stripe
 {
 	public record AddStripePayment(
-		string CustomerId,
-		string ReceiptEmail,
+		string Email,
+		string Name,
 		string Description,
 		string Currency,
-		long Amount);
+		long Amount,
+		AddStripeCard CreditCard);
 }
 
