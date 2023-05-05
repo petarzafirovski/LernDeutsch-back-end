@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LernDeutsch_Backend.Controllers
 {
-    [Route("api/quiz")]
+    [Route("api/quizes")]
     [ApiController]
     [Authorize]
     public class QuizController : ControllerBase

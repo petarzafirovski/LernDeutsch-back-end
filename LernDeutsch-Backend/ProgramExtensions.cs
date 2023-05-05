@@ -12,6 +12,10 @@ using LernDeutsch_Backend.Services.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using LernDeutsch_Backend.Repositories.Identity;
+using LernDeutsch_Backend.Repositories.Identity.SubUsers;
+using LernDeutsch_Backend.Repositories.Identity.SubUsers.Implementation;
+using LernDeutsch_Backend.Services.Identity.SubUsers;
+using LernDeutsch_Backend.Services.Identity.SubUsers.Implementation;
 
 namespace LernDeutsch_Backend
 {
@@ -30,7 +34,9 @@ namespace LernDeutsch_Backend
             services.AddTransient<ICourseStudentRepository, CourseStudentRepository>();
             services.AddTransient<ILessonRepository, LessonRepository>();
             services.AddTransient<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<IUserRepository, UserRepositoryImplementation>();
+            services.AddTransient<IUserRepository, UserRepositoryImplementation>();
+            services.AddTransient<IStudentRepository, StudentRepository>();
+            services.AddTransient<ITutorRepository, TutorRepository>();
             return services;
         }
 
@@ -52,6 +58,8 @@ namespace LernDeutsch_Backend
             services.AddScoped<ILessonService, LessonService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IUserService, UserServiceImplementation>();
+            services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<ITutorService, TutorService>();
             return services;
         }
 
