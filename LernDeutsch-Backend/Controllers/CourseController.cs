@@ -12,11 +12,12 @@ namespace LernDeutsch_Backend.Controllers
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _courseService;
+        private readonly ICourseStudentService _courseStudentService;
 
-
-        public CourseController(ICourseService courseService)
+        public CourseController(ICourseService courseService, ICourseStudentService courseStudentService)
         {
             _courseService = courseService;
+            _courseStudentService = courseStudentService;
         }
 
         [HttpGet]
@@ -35,6 +36,14 @@ namespace LernDeutsch_Backend.Controllers
         [HttpPut]
         [Authorize(Roles = "Tutor")]
         public IActionResult Update([FromBody] Course course) => Ok(_courseService.Update(course.CourseId, course));
+
+        [HttpPost("enroll-student")]
+        [Authorize(Roles = "Student")]
+        public IActionResult EnrollStudent([FromBody] CourseStudentCreateDto dto) => Ok(_courseStudentService.EnrollStudent(dto));
+
+        [HttpPost("remove-student/{id}")]
+        [Authorize(Roles = "Student")]
+        public IActionResult RemoveStudent(Guid Id) => Ok(_courseStudentService.Delete(Id));
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Tutor")]
