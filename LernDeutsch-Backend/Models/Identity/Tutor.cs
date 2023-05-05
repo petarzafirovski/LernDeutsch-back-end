@@ -2,6 +2,6 @@
 {
     public class Tutor : BaseUser
     {
-        public List<Course> Courses { get; set; } = new List<Course>();
+        public virtual List<Course> Courses { get; set; } = new List<Course>();
     }
 }

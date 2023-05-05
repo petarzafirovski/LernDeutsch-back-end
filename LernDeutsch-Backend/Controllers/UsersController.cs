@@ -19,7 +19,7 @@ namespace LernDeutsch_Backend.Controllers
 
 
         [HttpGet("get-user-details")]
-        public IActionResult GetUserDetails(string username)
+        public IActionResult GetUserDetails([FromQuery(Name = "username")] string username)
         {
             var user =  userService.GetUser(username);
             if (user != null)

@@ -1,19 +1,20 @@
 ﻿using LernDeutsch_Backend.Dtos;
 using LernDeutsch_Backend.Models;
 using LernDeutsch_Backend.Repositories;
-using LernDeutsch_Backend.Services.Identity;
+using LernDeutsch_Backend.Services.Identity.SubUsers;
+using LernDeutsch_Backend.Services.Identity.SubUsers.Implementation;
 
 namespace LernDeutsch_Backend.Services.Implementation
 {
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly IUserService _userService;
+        private readonly ITutorService _tutorService;
 
-        public CourseService(ICourseRepository courseRepository, IUserService userService)
+        public CourseService(ICourseRepository courseRepository, ITutorService tutorService)
         {
             _courseRepository = courseRepository;
-            _userService = userService;
+            _tutorService = tutorService;
         }
 
         public Course Create(Course entity) =>
@@ -36,12 +37,17 @@ namespace LernDeutsch_Backend.Services.Implementation
 
         public Course Create(CourseCreateDto dto)
         {
+            var tutor = _tutorService.GetUser(dto.TutorId.ToString());
+            if (tutor == null)
+                throw new Exception("Tutor cannot be null while creating a course");
+
             return _courseRepository.Create(new Course
             {
                 Length = dto.Length,
                 Name = dto.Name,
                 Level = dto.Level,
-                Price = dto.Price
+                Price = dto.Price,
+                Tutor = tutor
             });
         }
 

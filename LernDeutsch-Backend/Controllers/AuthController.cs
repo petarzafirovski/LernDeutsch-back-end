@@ -41,7 +41,7 @@ namespace LernDeutsch_Backend.Controllers
             var user = await _baseUser.FindByEmailAsync(loginDto.Email);
 
             if (user == null || !await _baseUser.CheckPasswordAsync(user, loginDto.Password))
-                return Unauthorized();
+                return NotFound();
 
             var userRoles = await _baseUser.GetRolesAsync(user);
 
@@ -135,7 +135,7 @@ namespace LernDeutsch_Backend.Controllers
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
-                expires: DateTime.Now.AddHours(2),
+                expires: DateTime.Now.AddDays(1),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );

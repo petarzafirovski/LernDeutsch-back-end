@@ -35,10 +35,13 @@ namespace LernDeutsch_Backend.Services.Implementation
 
         public Lesson Create(LessonCreateDto dto)
         {
+            var course = _courseService.GetById(dto.CourseId);
+            if (course == null)
+                throw new Exception("Course cannot be null while creating a lesson");
             return _lessonRepository.Create(new Lesson
             {
                 Content = dto.Content,
-                Course = _courseService.GetById(dto.CourseId),
+                Course = course,
                 Title = dto.Title
             });
         }
