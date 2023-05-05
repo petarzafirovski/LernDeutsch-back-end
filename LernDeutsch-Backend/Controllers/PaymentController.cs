@@ -16,18 +16,6 @@ namespace LernDeutsch_Backend.Controllers
             _stripeService = stripeService;
         }
 
-        [HttpPost("add/customer")]
-        public async Task<ActionResult<StripeCustomer>> AddStripeCustomer(
-            [FromBody] AddStripeCustomer customer,
-            CancellationToken ct)
-        {
-            StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(
-                customer,
-                ct);
-
-            return StatusCode(StatusCodes.Status200OK, createdCustomer);
-        }
-
         [HttpPost]
         public async Task<ActionResult<StripePayment>> AddStripePayment(
             [FromBody] AddStripePayment payment,
