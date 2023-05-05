@@ -12,6 +12,8 @@ using LernDeutsch_Backend.Services.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using LernDeutsch_Backend.Repositories.Identity;
+using Stripe;
+using LernDeutsch_Backend.Services.Stripe;
 
 namespace LernDeutsch_Backend
 {
@@ -34,8 +36,18 @@ namespace LernDeutsch_Backend
             return services;
         }
 
+        public static IServiceCollection AddStripeInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            StripeConfiguration.ApiKey = configuration.GetValue<string>("StripeSettings:SecretKey");
 
-        public static IServiceCollection Configure(this IServiceCollection services, ConfigurationManager configuration)
+            return services
+                .AddScoped<CustomerService>()
+                .AddScoped<ChargeService>()
+                .AddScoped<TokenService>()
+                .AddScoped<IStripeService, StripeService>();
+        }
+
+    public static IServiceCollection Configure(this IServiceCollection services, ConfigurationManager configuration)
         {
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             return services;
