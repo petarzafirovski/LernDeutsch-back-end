@@ -51,7 +51,7 @@ namespace LernDeutsch_Backend.Services.Implementation
         {
             var question = _quiestionRepository.GetById(answerCreateDto.QuestionId);
             if (question == null)
-                throw new Exception("Question cannot be null.");
+                throw new Exception("Question cannot be null while creating an answer.");
 
             return _answerRepository.Create(new Answer
             {
