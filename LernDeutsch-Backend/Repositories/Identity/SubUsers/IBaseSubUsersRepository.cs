@@ -3,6 +3,8 @@
     public interface IBaseSubUsersRepository<T> where T : class
     {
         List<T> GetAll();
-        T Get(string Id);
+        T? Get(string Id);
+
+        T? GetUserByUsername(string username);
     }
 }

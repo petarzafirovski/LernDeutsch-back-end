@@ -18,12 +18,17 @@ namespace LernDeutsch_Backend.Services.Identity.SubUsers.Implementation
             return _tutorRepository.GetAll();
         }
 
-        public Tutor GetUser(string Id)
+        public Tutor? GetUser(string Id)
         {
             var user = _tutorRepository.Get(Id);
             if (user == null)
                 throw new Exception("User does not exist");
             return user;
+        }
+
+        public Tutor? GetUserByUserName(string username)
+        {
+           return _tutorRepository.GetUserByUsername(username);
         }
     }
 }

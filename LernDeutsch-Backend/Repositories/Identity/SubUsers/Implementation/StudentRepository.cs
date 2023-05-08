@@ -12,7 +12,7 @@ namespace LernDeutsch_Backend.Repositories.Identity.SubUsers.Implementation
             _context = context;
         }
 
-        public Student Get(string Id)
+        public Student? Get(string Id)
         {
             var student = _context.Students.Find(Id);
             return student;
@@ -21,6 +21,12 @@ namespace LernDeutsch_Backend.Repositories.Identity.SubUsers.Implementation
         public List<Student> GetAll()
         {
             return _context.Students.ToList();
+        }
+
+        public Student? GetUserByUsername(string username)
+        {
+            var student = _context.Students.Where(x=>x.UserName == username).FirstOrDefault();
+            return student;
         }
     }
 }

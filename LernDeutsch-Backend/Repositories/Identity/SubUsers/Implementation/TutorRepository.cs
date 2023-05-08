@@ -12,7 +12,7 @@ namespace LernDeutsch_Backend.Repositories.Identity.SubUsers.Implementation
             _context = context;
         }
 
-        public Tutor Get(string Id)
+        public Tutor? Get(string Id)
         {
             var tutor = _context.Tutors.Find(Id);
             return tutor;
@@ -21,6 +21,12 @@ namespace LernDeutsch_Backend.Repositories.Identity.SubUsers.Implementation
         public List<Tutor> GetAll()
         {
             return _context.Tutors.ToList();    
+        }
+
+        public Tutor? GetUserByUsername(string username)
+        {
+            var tutor = _context.Tutors.Where(x=>x.UserName == username).FirstOrDefault();
+            return tutor;
         }
     }
 }
