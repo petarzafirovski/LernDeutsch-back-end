@@ -1,5 +1,6 @@
 ﻿using LernDeutsch_Backend.Models.Stripe;
 using LernDeutsch_Backend.Services.Stripe;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace LernDeutsch_Backend.Controllers
 {
     [Route("api/payment")]
     [ApiController]
+    [Authorize]
     public class PaymentController : ControllerBase
     {
         private readonly IStripeService _stripeService;
