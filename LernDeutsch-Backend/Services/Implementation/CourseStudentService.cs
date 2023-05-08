@@ -1,5 +1,6 @@
 ﻿using LernDeutsch_Backend.Dtos;
 using LernDeutsch_Backend.Models;
+using LernDeutsch_Backend.Models.Identity;
 using LernDeutsch_Backend.Repositories;
 using LernDeutsch_Backend.Services.Identity.SubUsers;
 
@@ -36,14 +37,8 @@ namespace LernDeutsch_Backend.Services.Implementation
         public List<CourseStudent> GetAll() =>
             _courseStudentRepository.GetAll();
 
-        public CourseStudent EnrollStudent(CourseStudentCreateDto dto)
-        {
-            var course = _courseService.GetById(dto.CourseId);
-            var student = _studentService.GetUser(dto.StudentId.ToString());
-
-            if (course == null || student == null)
-                throw new Exception("Cannot enroll student to course");
-
+        public CourseStudent EnrollStudent(Course course, Student student)
+        { 
             CourseStudent studentCourse = new()
             {
                 Course = course,

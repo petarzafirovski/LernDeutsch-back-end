@@ -21,11 +21,14 @@ namespace LernDeutsch_Backend.Controllers
             [FromBody] AddStripePayment payment,
             CancellationToken ct)
         {
-            StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(
+            bool IsPaymentAndEnrollmentSucc =  await _stripeService.AddStripePaymentAsync(
                 payment,
                 ct);
 
-            return StatusCode(StatusCodes.Status200OK, createdPayment);
+            if (!IsPaymentAndEnrollmentSucc)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to buy course and enroll.");
+
+            return StatusCode(StatusCodes.Status200OK, "Successfully enrolled and bought course.");
         }
     }
 }

@@ -4,6 +4,6 @@ namespace LernDeutsch_Backend.Services.Stripe
 {
 	public interface IStripeService
 	{
-		Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct);
+		Task<bool> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct);
 	}
 }

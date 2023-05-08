@@ -1,5 +1,6 @@
 ﻿using LernDeutsch_Backend.Dtos;
 using LernDeutsch_Backend.Models;
+using LernDeutsch_Backend.Models.Identity;
 using LernDeutsch_Backend.Services;
 using LernDeutsch_Backend.Services.Implementation;
 using Microsoft.AspNetCore.Authorization;
@@ -28,15 +29,15 @@ namespace LernDeutsch_Backend.Controllers
         public IActionResult GetById(Guid id) => Ok(_lessonService.GetById(id));
 
         [HttpPost]
-        [Authorize(Roles = "Tutor")]
+        [Authorize(Roles = UserRoles.Tutor)]
         public IActionResult Create([FromBody] LessonCreateDto lesson) => Ok(_lessonService.Create(lesson));
 
         [HttpPut]
-        [Authorize(Roles = "Tutor")]
+        [Authorize(Roles = UserRoles.Tutor)]
         public IActionResult Update([FromBody] Lesson lesson) => Ok(_lessonService.Update(lesson.LessonId, lesson));
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Tutor")]
+        [Authorize(Roles = UserRoles.Tutor)]
         public IActionResult Delete(Guid id) => Ok(_lessonService.Delete(id));
     }
 }

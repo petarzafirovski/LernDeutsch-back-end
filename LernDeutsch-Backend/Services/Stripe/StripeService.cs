@@ -1,4 +1,7 @@
-﻿using LernDeutsch_Backend.Models.Stripe;
+﻿using LernDeutsch_Backend.Models;
+using LernDeutsch_Backend.Models.Identity;
+using LernDeutsch_Backend.Models.Stripe;
+using LernDeutsch_Backend.Services.Identity.SubUsers;
 using Stripe;
 
 namespace LernDeutsch_Backend.Services.Stripe
@@ -8,15 +11,23 @@ namespace LernDeutsch_Backend.Services.Stripe
         private readonly ChargeService _chargeService;
         private readonly CustomerService _customerService;
         private readonly TokenService _tokenService;
+        private readonly ICourseStudentService _courseStudentService;
+        private readonly ICourseService _courseService;
+        private readonly IStudentService _studentService;
 
         public StripeService(
             ChargeService chargeService,
             CustomerService customerService,
-            TokenService tokenService)
+            TokenService tokenService, ICourseStudentService courseStudentService,
+            ICourseService courseService,
+            IStudentService studentService)
         {
             _chargeService = chargeService;
             _customerService = customerService;
             _tokenService = tokenService;
+            _courseStudentService = courseStudentService;
+            _studentService = studentService;
+            _courseService = courseService;
         }
 
         public async Task<StripeCustomer> AddStripeCustomerAsync(string Email, string Name, AddStripeCard card, CancellationToken ct)
@@ -48,30 +59,37 @@ namespace LernDeutsch_Backend.Services.Stripe
         }
 
 
-        public async Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct)
+        public async Task<bool> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct)
         {
-            var getStripeCustomer = await AddStripeCustomerAsync(payment.Email, payment.Name, payment.CreditCard, ct);
+            var student = _studentService.GetUserByUserName(payment.Username);
+            var course = _courseService.GetById(new Guid(payment.CourseId));
+
+            if (student == null || course == null)
+                return false;
+
+            var getStripeCustomer = await AddStripeCustomerAsync(student.Email,string.Format("{0} {1}",student.FirstName,student.LastName), payment.CreditCard, ct);
 
             ChargeCreateOptions paymentOptions = new()
             {
                 Customer = getStripeCustomer.CustomerId,
                 ReceiptEmail = getStripeCustomer.Email,
-                Description = payment.Description,
-                Currency = payment.Currency,
-                Amount = payment.Amount
+                Description = "Buying course",
+                Currency = "USD",
+                Amount = Convert.ToInt32(course.Price)
             };
 
-            var createdPayment = await _chargeService.CreateAsync(paymentOptions, null, ct);
-
-            return new StripePayment(
-              createdPayment.CustomerId,
-              createdPayment.ReceiptEmail,
-              createdPayment.Description,
-              createdPayment.Currency,
-              createdPayment.Amount,
-              createdPayment.Id);
+            var CreatedPayment = await _chargeService.CreateAsync(paymentOptions, null, ct);
+            
+            bool statusOfPayment = CreatedPayment == null ? false : true;
+            return StatusOfPaymentAndEnrollment(statusOfPayment, course, student);
         }
 
-
+        private bool StatusOfPaymentAndEnrollment(bool statusOfPayment, Course course, Student student)
+        {
+            if (!statusOfPayment)
+                return false;
+            var IsEnrollmentSuccessfull = _courseStudentService.EnrollStudent(course, student) != null ? true : false;
+            return IsEnrollmentSuccessfull;
+        }
     }
 }

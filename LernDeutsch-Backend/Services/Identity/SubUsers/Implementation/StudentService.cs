@@ -18,9 +18,14 @@ namespace LernDeutsch_Backend.Services.Identity.SubUsers.Implementation
             return _studentRepository.GetAll();
         }
 
-        public Student GetUser(string Id)
+        public Student? GetUser(string Id)
         {
             return _studentRepository.Get(Id);
+        }
+
+        public Student? GetUserByUserName(string username)
+        {
+            return _studentRepository.GetUserByUsername(username);
         }
     }
 }
