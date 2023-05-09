@@ -18,16 +18,23 @@ namespace LernDeutsch_Backend.Repositories.Identity
 
         public void AddUser(RegisterDTO registerDTO)
         {
-            var user = GetUserTypeBasedOnRole(registerDTO.Role);
-            user.Email = registerDTO.Email;
-            user.SecurityStamp = Guid.NewGuid().ToString();
-            user.UserName = registerDTO.UserName;
-            user.FirstName = registerDTO.FirstName;
-            user.LastName = registerDTO.LastName;
+            var baseUser = new BaseUser()
+            {
+                Email = registerDTO.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = registerDTO.UserName,
+                FirstName = registerDTO.FirstName,
+                LastName = registerDTO.LastName,
+            };
 
-            userManager.CreateAsync(user).Wait();
+            if (registerDTO.Role.Equals(UserRoles.Tutor))
+                baseUser.Tutor = new Tutor();
+            else 
+                baseUser.Student = new Student();
 
-            AssignRoleToUser(registerDTO, user);
+            userManager.CreateAsync(baseUser).Wait();
+
+            AssignRoleToUser(registerDTO, baseUser);
         }
 
         private void AssignRoleToUser(RegisterDTO registerDTO, BaseUser user)
@@ -46,16 +53,6 @@ namespace LernDeutsch_Backend.Repositories.Identity
                 }
             }
             userManager.AddToRoleAsync(user, registerDTO.Role).Wait();
-        }
-
-        private BaseUser GetUserTypeBasedOnRole(string role)
-        {
-            return role switch
-            {
-                UserRoles.Student => new Student(),
-                UserRoles.Tutor => new Tutor(),
-                _ => new Student(),
-            };
         }
 
         public void DeleteUser(string username)

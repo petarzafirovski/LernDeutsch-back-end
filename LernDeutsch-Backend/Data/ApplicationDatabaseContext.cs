@@ -58,7 +58,6 @@ namespace LernDeutsch_Backend.Data
                 .HasOne(e => e.Course)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-
         }
     }
 }

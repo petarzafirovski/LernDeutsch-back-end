@@ -37,9 +37,9 @@ namespace LernDeutsch_Backend.Services.Stripe
                 Card = new TokenCardOptions
                 {
                     Name = Name,
-                    Number = card.CardNumber,
-                    ExpYear = card.ExpirationYear,
-                    ExpMonth = card.ExpirationMonth,
+                    Number = card.CardNumber.ToString(),
+                    ExpYear = card.ExpirationYear.ToString(),
+                    ExpMonth = card.ExpirationMonth.ToString(),
                     Cvc = card.Cvc
                 }
             };
@@ -67,7 +67,7 @@ namespace LernDeutsch_Backend.Services.Stripe
             if (student == null || course == null)
                 return false;
 
-            var getStripeCustomer = await AddStripeCustomerAsync(student.Email,string.Format("{0} {1}",student.FirstName,student.LastName), payment.CreditCard, ct);
+            var getStripeCustomer = await AddStripeCustomerAsync(student.BaseUser.Email,string.Format("{0} {1}",student.BaseUser.FirstName,student.BaseUser.LastName), payment.CreditCard, ct);
 
             ChargeCreateOptions paymentOptions = new()
             {

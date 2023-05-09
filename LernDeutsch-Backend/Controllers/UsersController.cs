@@ -1,5 +1,6 @@
 ﻿using LernDeutsch_Backend.Models.Identity.DTO;
 using LernDeutsch_Backend.Services.Identity;
+using LernDeutsch_Backend.Services.Identity.SubUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +12,18 @@ namespace LernDeutsch_Backend.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly ITutorService tutorService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, ITutorService tutorService)
         {
             this.userService = userService;
+            this.tutorService = tutorService;
+        }
+
+        [HttpGet("get-tutors")]
+        public IActionResult GetTutors()
+        {
+            return Ok(tutorService.GetAll());
         }
 
 
