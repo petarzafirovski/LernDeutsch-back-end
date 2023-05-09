@@ -10,7 +10,6 @@ namespace LernDeutsch_Backend.Controllers
 
     [Route("api/courses")]
     [ApiController]
-    [Authorize]
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _courseService;
@@ -32,7 +31,6 @@ namespace LernDeutsch_Backend.Controllers
         public IActionResult GetById(Guid id) => Ok(_courseService.GetById(id));
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.Tutor)]
         public IActionResult Create([FromBody] CourseCreateDto course) => Ok(_courseService.Create(course));
 
         [HttpPut]

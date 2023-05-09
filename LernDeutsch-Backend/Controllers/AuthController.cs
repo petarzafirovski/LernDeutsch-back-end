@@ -1,5 +1,6 @@
 ﻿using LernDeutsch_Backend.Models.Identity;
 using LernDeutsch_Backend.Models.Identity.DTO;
+using LernDeutsch_Backend.Services.Identity.SubUsers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -17,33 +18,37 @@ namespace LernDeutsch_Backend.Controllers
     [AllowAnonymous]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<BaseUser> _baseUser;
+        private readonly UserManager<BaseUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IStudentService _studentService;
+        private readonly ITutorService _tutorService;
 
         public AuthController(
             UserManager<BaseUser> baseUser,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
-            IHttpContextAccessor contextAccessor)
+            IHttpContextAccessor contextAccessor,
+            IStudentService studentService,
+            ITutorService tutorService)
         {
-            _baseUser = baseUser;
+            _userManager = baseUser;
             _roleManager = roleManager;
             _configuration = configuration;
-            _contextAccessor = contextAccessor;
+            _studentService = studentService;
+            _tutorService = tutorService;
         }
 
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
-            var user = await _baseUser.FindByEmailAsync(loginDto.Email);
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-            if (user == null || !await _baseUser.CheckPasswordAsync(user, loginDto.Password))
+            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
                 return NotFound();
 
-            var userRoles = await _baseUser.GetRolesAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
             var authClaims = new List<Claim>
                 {
@@ -83,7 +88,7 @@ namespace LernDeutsch_Backend.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDto)
         {
-            var userExists = await _baseUser.FindByNameAsync(registerDto.UserName);
+            var userExists = await _userManager.FindByNameAsync(registerDto.UserName);
             if (userExists != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDTO { Status = "Error", Message = "User already exists" });
 
@@ -96,7 +101,7 @@ namespace LernDeutsch_Backend.Controllers
                 LastName = registerDto.LastName
             };
 
-            var result = await _baseUser.CreateAsync(user, registerDto.Password);
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
             {
                 StringBuilder stringBuilderErrorMessages = new();
@@ -105,6 +110,19 @@ namespace LernDeutsch_Backend.Controllers
                     stringBuilderErrorMessages.AppendLine(errorMessage.Code + ", Message:" + errorMessage.Description);
                 }
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseDTO { Status = "Error", Message = stringBuilderErrorMessages.ToString() });
+            }
+            else
+            {
+                if (registerDto.Role.Equals(UserRoles.Tutor))
+                {
+                    user.Tutor = _tutorService.CreateSubUser(user);
+                    await _userManager.UpdateAsync(user);
+                }
+                else
+                {
+                    user.Student = _studentService.CreateSubUser(user);
+                    await _userManager.UpdateAsync(user);
+                }               
             }
 
             bool doesRoleExist = _roleManager.Roles.Any(role => role.Name.Equals(registerDto.Role));
@@ -115,16 +133,16 @@ namespace LernDeutsch_Backend.Controllers
                 {
                     case UserRoles.Student:
                         await _roleManager.CreateAsync(new IdentityRole(UserRoles.Student));
+                        await _userManager.AddToRoleAsync(user, UserRoles.Student);
                         break;
                     case UserRoles.Tutor:
                         await _roleManager.CreateAsync(new IdentityRole(UserRoles.Tutor));
+                        await _userManager.AddToRoleAsync(user, UserRoles.Tutor);
                         break;
                     default:
                         return StatusCode(StatusCodes.Status400BadRequest, new ResponseDTO { Status = "Error", Message = "The provided role does not exist within the system." });
                 }
             }
-
-            await _baseUser.AddToRoleAsync(user, registerDto.Role);
 
             return Ok(new ResponseDTO { Status = "Success", Message = "User created successfully!" });
         }

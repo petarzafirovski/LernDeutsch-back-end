@@ -31,8 +31,8 @@ namespace LernDeutsch_Backend.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("bit");
 
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -65,8 +65,8 @@ namespace LernDeutsch_Backend.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("TutorId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("TutorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CourseId");
 
@@ -84,8 +84,8 @@ namespace LernDeutsch_Backend.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -106,10 +106,6 @@ namespace LernDeutsch_Backend.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -171,8 +167,42 @@ namespace LernDeutsch_Backend.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("BaseUser");
+            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Student", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BaseUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaseUserId")
+                        .IsUnique();
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Tutor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BaseUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaseUserId")
+                        .IsUnique();
+
+                    b.ToTable("Tutors");
                 });
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Lesson", b =>
@@ -199,14 +229,12 @@ namespace LernDeutsch_Backend.Migrations
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Question", b =>
                 {
-                    b.Property<int>("QuestionId")
+                    b.Property<Guid>("QuestionId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuestionId"), 1L, 1);
-
-                    b.Property<int>("QuizId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("QuizId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -221,11 +249,9 @@ namespace LernDeutsch_Backend.Migrations
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Quiz", b =>
                 {
-                    b.Property<int>("QuizId")
+                    b.Property<Guid>("QuizId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuizId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("LessonId")
                         .HasColumnType("uniqueidentifier");
@@ -405,20 +431,6 @@ namespace LernDeutsch_Backend.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Student", b =>
-                {
-                    b.HasBaseType("LernDeutsch_Backend.Models.Identity.BaseUser");
-
-                    b.HasDiscriminator().HasValue("Student");
-                });
-
-            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Tutor", b =>
-                {
-                    b.HasBaseType("LernDeutsch_Backend.Models.Identity.BaseUser");
-
-                    b.HasDiscriminator().HasValue("Tutor");
-                });
-
             modelBuilder.Entity("LernDeutsch_Backend.Models.Answer", b =>
                 {
                     b.HasOne("LernDeutsch_Backend.Models.Question", "Question")
@@ -449,11 +461,35 @@ namespace LernDeutsch_Backend.Migrations
 
                     b.HasOne("LernDeutsch_Backend.Models.Identity.Student", "Student")
                         .WithMany("Courses")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Course");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Student", b =>
+                {
+                    b.HasOne("LernDeutsch_Backend.Models.Identity.BaseUser", "BaseUser")
+                        .WithOne("Student")
+                        .HasForeignKey("LernDeutsch_Backend.Models.Identity.Student", "BaseUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BaseUser");
+                });
+
+            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Tutor", b =>
+                {
+                    b.HasOne("LernDeutsch_Backend.Models.Identity.BaseUser", "BaseUser")
+                        .WithOne("Tutor")
+                        .HasForeignKey("LernDeutsch_Backend.Models.Identity.Tutor", "BaseUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BaseUser");
                 });
 
             modelBuilder.Entity("LernDeutsch_Backend.Models.Lesson", b =>
@@ -566,6 +602,25 @@ namespace LernDeutsch_Backend.Migrations
                     b.Navigation("Students");
                 });
 
+            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.BaseUser", b =>
+                {
+                    b.Navigation("Student")
+                        .IsRequired();
+
+                    b.Navigation("Tutor")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Student", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
+            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Tutor", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
             modelBuilder.Entity("LernDeutsch_Backend.Models.Lesson", b =>
                 {
                     b.Navigation("Quizzes");
@@ -579,16 +634,6 @@ namespace LernDeutsch_Backend.Migrations
             modelBuilder.Entity("LernDeutsch_Backend.Models.Quiz", b =>
                 {
                     b.Navigation("Questions");
-                });
-
-            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Student", b =>
-                {
-                    b.Navigation("Courses");
-                });
-
-            modelBuilder.Entity("LernDeutsch_Backend.Models.Identity.Tutor", b =>
-                {
-                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

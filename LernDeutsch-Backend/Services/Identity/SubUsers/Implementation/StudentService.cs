@@ -13,6 +13,11 @@ namespace LernDeutsch_Backend.Services.Identity.SubUsers.Implementation
             _studentRepository = studentRepository;
         }
 
+        public Student CreateSubUser(BaseUser baseUser)
+        {
+            return _studentRepository.CreateSubUser(baseUser);
+        }
+
         public List<Student> GetAll()
         {
             return _studentRepository.GetAll();
@@ -20,6 +25,9 @@ namespace LernDeutsch_Backend.Services.Identity.SubUsers.Implementation
 
         public Student? GetUser(string Id)
         {
+            var user = _studentRepository.Get(Id);
+            if (user == null)
+                throw new Exception("User does not exist");
             return _studentRepository.Get(Id);
         }
 

@@ -3,17 +3,19 @@ using Microsoft.AspNetCore;
 using System.Security.Cryptography;
 using LernDeutsch_Backend.Data;
 using Microsoft.EntityFrameworkCore;
+using LernDeutsch_Backend.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration["JWT:Secret"] = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
 
-
+builder.Services.AddDbContextAndIdentity(builder.Configuration);
+builder.Services.AddJwt(builder.Configuration);
 builder.Services.AddAuthorization();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x=>x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddJwt(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -24,7 +26,7 @@ builder.Services.AddSwaggerSecurity();
 builder.Services.Configure(builder.Configuration);
 
 
-builder.Services.AddRepositories(builder.Configuration);
+builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddStripeInfrastructure(builder.Configuration);
 

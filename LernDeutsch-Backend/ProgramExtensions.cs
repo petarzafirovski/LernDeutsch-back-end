@@ -23,12 +23,8 @@ namespace LernDeutsch_Backend
 {
     public static class ProgramExtensions
     {
-        public static IServiceCollection AddRepositories(this IServiceCollection services, ConfigurationManager configuration)
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationDatabaseContext>(x => x.UseSqlServer(connectionString));
-            services.AddIdentity<BaseUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDatabaseContext>().AddDefaultTokenProviders();
-
             services.AddTransient<IAnswerRepository, AnswerRepository>();
             services.AddTransient<IQuizRepository, QuizRepository>();
             services.AddTransient<IQuestionRepository, QuestionRepository>();
@@ -96,6 +92,14 @@ namespace LernDeutsch_Backend
                 };
             });
 
+            return services;
+        }
+
+        public static IServiceCollection AddDbContextAndIdentity(this IServiceCollection services, ConfigurationManager configuration)
+        {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ApplicationDatabaseContext>(x => x.UseSqlServer(connectionString));
+            services.AddIdentity<BaseUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDatabaseContext>().AddDefaultTokenProviders();
             return services;
         }
 
