@@ -14,10 +14,10 @@ namespace LernDeutsch_Backend.Repositories.Implementation
         }
 
         public List<Course> GetAll() =>
-            _context.Courses.Include(x=>x.Tutor).ToList();
+            _context.Courses.Include(x=>x.Tutor).Include(x=>x.Students).ToList();
 
         public Course? GetById(Guid id) =>
-            _context.Courses.Find(id);
+            _context.Courses.Where(x=>x.CourseId.Equals(id)).Include(x => x.Tutor).Include(x => x.Students).FirstOrDefault();
 
         public Course Create(Course entity)
         {

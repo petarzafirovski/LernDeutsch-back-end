@@ -37,9 +37,9 @@ namespace LernDeutsch_Backend.Services.Stripe
                 Card = new TokenCardOptions
                 {
                     Name = Name,
-                    Number = card.CardNumber,
-                    ExpYear = card.ExpirationYear,
-                    ExpMonth = card.ExpirationMonth,
+                    Number = card.CardNumber.ToString(),
+                    ExpYear = card.ExpirationYear.ToString(),
+                    ExpMonth = card.ExpirationMonth.ToString(),
                     Cvc = card.Cvc
                 }
             };
