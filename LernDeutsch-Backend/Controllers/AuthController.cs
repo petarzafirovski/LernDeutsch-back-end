@@ -127,22 +127,27 @@ namespace LernDeutsch_Backend.Controllers
 
             bool doesRoleExist = _roleManager.Roles.Any(role => role.Name.Equals(registerDto.Role));
 
-            if (!doesRoleExist)
-            {
+
                 switch (registerDto.Role)
                 {
                     case UserRoles.Student:
-                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.Student));
+                        if (doesRoleExist)
+                        {
+                            await _roleManager.CreateAsync(new IdentityRole(UserRoles.Student));
+                        }
                         await _userManager.AddToRoleAsync(user, UserRoles.Student);
                         break;
                     case UserRoles.Tutor:
-                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.Tutor));
+                        if (doesRoleExist)
+                        {
+                            await _roleManager.CreateAsync(new IdentityRole(UserRoles.Tutor));
+                        }
                         await _userManager.AddToRoleAsync(user, UserRoles.Tutor);
                         break;
                     default:
                         return StatusCode(StatusCodes.Status400BadRequest, new ResponseDTO { Status = "Error", Message = "The provided role does not exist within the system." });
                 }
-            }
+            
 
             return Ok(new ResponseDTO { Status = "Success", Message = "User created successfully!" });
         }
