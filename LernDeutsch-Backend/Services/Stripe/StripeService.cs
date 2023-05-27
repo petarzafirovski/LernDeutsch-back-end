@@ -75,7 +75,7 @@ namespace LernDeutsch_Backend.Services.Stripe
                 ReceiptEmail = getStripeCustomer.Email,
                 Description = "Buying course",
                 Currency = "USD",
-                Amount = Convert.ToInt32(course.Price)
+                Amount = Convert.ToInt32(course.Price * 100) // Convert dollars to cents
             };
 
             var CreatedPayment = await _chargeService.CreateAsync(paymentOptions, null, ct);

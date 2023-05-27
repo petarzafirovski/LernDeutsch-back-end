@@ -131,14 +131,14 @@ namespace LernDeutsch_Backend.Controllers
                 switch (registerDto.Role)
                 {
                     case UserRoles.Student:
-                        if (doesRoleExist)
+                        if (!doesRoleExist)
                         {
                             await _roleManager.CreateAsync(new IdentityRole(UserRoles.Student));
                         }
                         await _userManager.AddToRoleAsync(user, UserRoles.Student);
                         break;
                     case UserRoles.Tutor:
-                        if (doesRoleExist)
+                        if (!doesRoleExist)
                         {
                             await _roleManager.CreateAsync(new IdentityRole(UserRoles.Tutor));
                         }
