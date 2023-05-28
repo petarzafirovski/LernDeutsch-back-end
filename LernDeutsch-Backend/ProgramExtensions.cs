@@ -49,7 +49,21 @@ namespace LernDeutsch_Backend
                 .AddScoped<IStripeService, StripeService>();
         }
 
-    public static IServiceCollection Configure(this IServiceCollection services, ConfigurationManager configuration)
+        public static IServiceCollection AddLazyResolution(this IServiceCollection services)
+        {
+            return services.AddTransient(
+                typeof(Lazy<>),
+                typeof(LazilyResolved<>));
+        }
+
+        sealed class LazilyResolved<T> : Lazy<T>
+        {
+            public LazilyResolved(IServiceProvider serviceProvider) : base(serviceProvider.GetRequiredService<T>)
+            {
+            }
+        }
+
+        public static IServiceCollection Configure(this IServiceCollection services, ConfigurationManager configuration)
         {
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             return services;

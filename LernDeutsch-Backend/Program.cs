@@ -25,7 +25,7 @@ builder.Services.AddSwaggerSecurity();
 
 builder.Services.Configure(builder.Configuration);
 
-
+builder.Services.AddLazyResolution();
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddStripeInfrastructure(builder.Configuration);

@@ -12,5 +12,7 @@ namespace LernDeutsch_Backend.Dtos
         public double Price { get; set; }
         [Required]
         public Guid TutorId { get; set; }
+
+        public BulkQuizCreateDto FinalQuiz { get; set; }
     }
 }
