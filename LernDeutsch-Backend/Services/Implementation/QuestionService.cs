@@ -9,11 +9,13 @@ namespace LernDeutsch_Backend.Services.Implementation
     {
         private readonly IQuestionRepository _questionRepository;
         private readonly IQuizRepository _quizRepository;
+        private readonly IAnswerService _answerService;
 
-        public QuestionService(IQuestionRepository questionRepository, IQuizRepository quizRepository)
+        public QuestionService(IQuestionRepository questionRepository, IQuizRepository quizRepository, IAnswerService answerService)
         {
             _questionRepository = questionRepository;
             _quizRepository = quizRepository;
+            _answerService = answerService;
         }
 
 
@@ -25,11 +27,19 @@ namespace LernDeutsch_Backend.Services.Implementation
             var quiz = _quizRepository.GetById(new Guid(dto.QuizId));
             if (quiz == null)
                 throw new Exception("Quiz cannot be null.");
-            return _questionRepository.Create(new Question
+            Question question = _questionRepository.Create(new Question
             {
                 Text = dto.Text,
                 Quiz = quiz
             });
+
+            dto.Answers.ForEach(answer =>
+            {
+                answer.QuestionId = question.QuestionId;
+                _answerService.CreateAnswer(answer);
+            });
+
+            return question;
         }
 
         public Question Delete(Guid id) =>

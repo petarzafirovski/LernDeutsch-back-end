@@ -1,0 +1,58 @@
+{
+  "title": "Level Determination",
+  "lessonId": "b6d9ad85-fde9-4cad-745e-08db5f1769d2",
+  "quizType": 0,
+  "questions": [
+    {
+      "text": "Wo können Sie mit dem Ticket reisen?",
+      "answers": [
+        {
+          "text": "In Deutschland und im Ausland.",
+          "isCorrect": true
+        },
+        {
+          "text": "Nur in Deutschland.",
+          "isCorrect": false
+        },
+        {
+          "text": "Nur in Ihrer Nähe.",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "Bis wann können Sie reisen?",
+      "answers": [
+        {
+          "text": "Bis Mitte November.",
+          "isCorrect": true
+        },
+        {
+          "text": "Bis Mitte Dezember.",
+          "isCorrect": false
+        },
+        {
+          "text": "Bis Ende Dezember.",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "Man bezahlt 29 Euro für …",
+      "answers": [
+        {
+          "text": "eine Fahrt hin und zurück.",
+          "isCorrect": true
+        },
+        {
+          "text": "eine Fahrt in der zweiten Klasse.",
+          "isCorrect": false
+        },
+        {
+          "text": "viele Fahrten an einem Tag.",
+          "isCorrect": false
+        }
+      ]
+    }
+  ]
+}

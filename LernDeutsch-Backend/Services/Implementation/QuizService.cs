@@ -8,11 +8,13 @@ namespace LernDeutsch_Backend.Services.Implementation
     {
         private readonly IQuizRepository _quizRepository;
         private readonly ILessonRepository _lessonRepository;
+        private readonly IQuestionService _questionService;
 
-        public QuizService(IQuizRepository quizRepository, ILessonRepository lessonRepository)
+        public QuizService(IQuizRepository quizRepository, ILessonRepository lessonRepository, IQuestionService questionService)
         {
             _quizRepository = quizRepository;
             _lessonRepository = lessonRepository;
+            _questionService = questionService;
         }
 
         public Quiz Create(Quiz entity) =>
@@ -45,5 +47,30 @@ namespace LernDeutsch_Backend.Services.Implementation
                 Lesson = lesson
             });
         }
+
+        public Quiz BulkCreateQuiz(BulkQuizCreateDto dto)
+        {
+            var lesson = _lessonRepository.GetById(new Guid(dto.LessonId));
+            if (lesson == null)
+                throw new Exception("Lesson could not be null.");
+
+            Quiz quiz = _quizRepository.Create(new Quiz
+            {
+                Title = dto.Title,
+                QuizType = dto.QuizType,
+                Lesson = lesson
+            });
+
+            dto.Questions.ForEach(question =>
+            {
+                question.QuizId = quiz.QuizId.ToString();
+                _questionService.CreateQuestion(question);
+            });
+
+            return quiz;
+        }
+
+        public Quiz GetLevelDeterminationQuiz() => 
+            _quizRepository.GetLevelDeterminationQuiz();
     }
 }

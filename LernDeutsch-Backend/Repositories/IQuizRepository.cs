@@ -5,4 +5,5 @@ namespace LernDeutsch_Backend.Repositories;
 
 public interface IQuizRepository : IBaseRepository<Quiz>
 {
+    Quiz GetLevelDeterminationQuiz();
 }

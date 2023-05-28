@@ -50,6 +50,10 @@ namespace LernDeutsch_Backend.Data
                 .HasOne(e => e.Lesson)
                 .WithMany(e => e.Quizzes);
 
+            builder.Entity<Quiz>()
+                .Property(e => e.QuizType)
+                .HasConversion<string>();
+
             builder.Entity<Transaction>()
                 .HasOne(e => e.BoughtBy)
                 .WithMany();

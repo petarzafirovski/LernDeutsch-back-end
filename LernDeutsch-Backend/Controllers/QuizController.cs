@@ -9,7 +9,6 @@ namespace LernDeutsch_Backend.Controllers
 {
     [Route("api/quizes")]
     [ApiController]
-    [Authorize]
     public class QuizController : ControllerBase
     {
         private readonly IQuizService _quizService;
@@ -36,6 +35,13 @@ namespace LernDeutsch_Backend.Controllers
         [HttpDelete("{id}")]
         [Authorize(Roles = UserRoles.Tutor)]
         public IActionResult Delete(Guid id) => Ok(_quizService.Delete(id));
+
+        [HttpPost("/bulk")]
+        [Authorize(Roles = UserRoles.Tutor)]
+        public IActionResult BulkCreate([FromBody] BulkQuizCreateDto dto) => Ok(_quizService.BulkCreateQuiz(dto));
+
+        [HttpGet("level-determination")]
+        public IActionResult GetLevelDeterminationQuiz() => Ok(_quizService.GetLevelDeterminationQuiz());
 
     }
 }

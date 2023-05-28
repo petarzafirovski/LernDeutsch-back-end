@@ -1,4 +1,5 @@
 ﻿using LernDeutsch_Backend.Data;
+using LernDeutsch_Backend.Dtos.Types;
 using LernDeutsch_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,5 +36,10 @@ namespace LernDeutsch_Backend.Repositories.Implementation
 
         public Quiz Delete(Guid id) =>
             _context.Quizzes.Remove(GetById(id)!).Entity;
+
+        public Quiz GetLevelDeterminationQuiz() =>
+            _context.Quizzes.Where(q => q.QuizType == QuizType.LevelDetermination)
+                .Include(q => q.Questions).ThenInclude(q => q.Answers)
+                .First();
     }
 }
