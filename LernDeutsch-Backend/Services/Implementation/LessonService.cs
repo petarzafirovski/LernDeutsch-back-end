@@ -1,4 +1,5 @@
 ﻿using LernDeutsch_Backend.Dtos;
+using LernDeutsch_Backend.Dtos.Types;
 using LernDeutsch_Backend.Models;
 using LernDeutsch_Backend.Repositories;
 
@@ -8,11 +9,13 @@ namespace LernDeutsch_Backend.Services.Implementation
     {
         private readonly ILessonRepository _lessonRepository;
         private readonly ICourseService _courseService;
+        private readonly IQuizService _quizService;
 
-        public LessonService(ILessonRepository lessonRepository, ICourseService courseService)
+        public LessonService(ILessonRepository lessonRepository, ICourseService courseService, IQuizService quizService)
         {
             _lessonRepository = lessonRepository;
             _courseService = courseService;
+            _quizService = quizService;
         }
 
         public Lesson Create(Lesson entity) =>
@@ -44,6 +47,13 @@ namespace LernDeutsch_Backend.Services.Implementation
                 Course = course,
                 Title = dto.Title
             });
+        }
+
+        public Quiz FindFinalQuizByCourse(Course course)
+        {
+            var finalLesson = _lessonRepository.FindByCourseAndType(course, LessonType.FinalLesson);
+            Quiz quiz = finalLesson.Quizzes.First(q => q.QuizType == QuizType.FinalQuiz);
+            return _quizService.GetById(quiz.QuizId);
         }
     }
 }

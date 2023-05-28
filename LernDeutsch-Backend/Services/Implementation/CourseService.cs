@@ -73,5 +73,14 @@ namespace LernDeutsch_Backend.Services.Implementation
         {
             return _courseRepository.GetAll().GroupBy(x => x.Level).ToDictionary(x => x.Key, x => x.ToList());
         }
+
+        public Quiz GetFinalQuiz(Guid id)
+        {
+            var course = _courseRepository.GetById(id);
+            if (course == null)
+                throw new Exception("Course can't be null");
+
+            return _lessonService.Value.FindFinalQuizByCourse(course);
+        }
     }
 }

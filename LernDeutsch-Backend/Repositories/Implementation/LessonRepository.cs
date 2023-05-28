@@ -1,4 +1,5 @@
 ﻿using LernDeutsch_Backend.Data;
+using LernDeutsch_Backend.Dtos.Types;
 using LernDeutsch_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,5 +36,8 @@ namespace LernDeutsch_Backend.Repositories.Implementation
 
         public Lesson Delete(Guid id) =>
             _context.Lessons.Remove(GetById(id)!).Entity;
+
+        public Lesson FindByCourseAndType(Course course, LessonType type) =>
+            _context.Lessons.Where(lesson => lesson.Course.Equals(course) && lesson.LessonType == type).Include(lesson => lesson.Quizzes).First();
     }
 }

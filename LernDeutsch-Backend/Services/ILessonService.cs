@@ -7,5 +7,6 @@ namespace LernDeutsch_Backend.Services
     public interface ILessonService : IBaseService<Lesson>
     {
         Lesson Create(LessonCreateDto dto);
+        Quiz FindFinalQuizByCourse(Course course);
     }
 }

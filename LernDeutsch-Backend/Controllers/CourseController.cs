@@ -46,5 +46,8 @@ namespace LernDeutsch_Backend.Controllers
         [HttpDelete("{id}")]
         [Authorize(Roles = UserRoles.Tutor)]
         public IActionResult Delete(Guid id) => Ok(_courseService.Delete(id));
+
+        [HttpGet("{id}/final-quiz")]
+        public IActionResult GetFinalQuiz(Guid id) => Ok(_courseService.GetFinalQuiz(id));
     }
 }

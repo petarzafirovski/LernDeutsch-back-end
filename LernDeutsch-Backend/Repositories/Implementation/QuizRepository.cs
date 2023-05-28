@@ -18,7 +18,9 @@ namespace LernDeutsch_Backend.Repositories.Implementation
             _context.Quizzes.ToList();
 
         public Quiz? GetById(Guid id) =>
-            _context.Quizzes.Find(id);
+            _context.Quizzes.Where(q => q.QuizId == id)
+                .Include(q => q.Questions).ThenInclude(q => q.Answers)
+                .First();
 
         public Quiz Create(Quiz entity)
         {

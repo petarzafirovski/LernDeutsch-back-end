@@ -3,6 +3,7 @@
     public enum QuizType
     {
         LevelDetermination,
-        Lesson
+        Lesson,
+        FinalQuiz
     }
 }

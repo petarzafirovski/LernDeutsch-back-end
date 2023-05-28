@@ -8,5 +8,6 @@ namespace LernDeutsch_Backend.Services
     {
         Course Create(CourseCreateDto  dto);
         Dictionary<string, List<Course>> GetCoursesByLevels();
+        Quiz GetFinalQuiz(Guid id);
     }
 }
