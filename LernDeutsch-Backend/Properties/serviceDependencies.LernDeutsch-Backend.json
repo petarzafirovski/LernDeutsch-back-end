@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/LernDeutsch-Backendapi/apis/LernDeutsch-Backend",
+      "type": "apis.azure"
+    }
+  }
+}
